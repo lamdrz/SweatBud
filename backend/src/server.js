@@ -1,19 +1,25 @@
-const express = require("express");
+import express from "express";
+import cors from "cors";
+import "./loadEnvironment.mjs";
+import posts from "./routes/posts.mjs";
+
+const PORT = process.env.PORT || 5050;
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON bodies
-app.use(express.json());
+// Middleware
+app.use(express.json()); // parse JSON bodies
+app.use(express.static('public')); // to serve static files from 'public' directory
+app.use(cors());
 
-// Middleware to serve static files from 'public' directory
-app.use(express.static('public'));
+// Load the /posts routes
+app.use("/posts", posts);
 
-// Test route
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'Server is running!' });
-});
+// Global error handling
+app.use((err, _req, res, next) => {
+  res.status(500).send("Uh oh! An unexpected error occured.")
+})
 
-// Start server
+// start the Express server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port: ${PORT}`);
 });
