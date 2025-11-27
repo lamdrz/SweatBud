@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import auth from "./routes/auth.routes.js";
+import users from "./routes/user.routes.js";
 
 dotenv.config();
 
@@ -12,5 +13,6 @@ app.use(express.static('public')); // to serve static files from 'public' direct
 
 // Routes
 app.use("/auth", auth);
+app.use("/users", users);
 
 export default app;
