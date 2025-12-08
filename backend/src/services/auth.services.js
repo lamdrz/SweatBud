@@ -2,8 +2,11 @@ import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const generateToken = (userId) =>
-  jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "1d" });
+const generateAccessToken = (userId) =>
+  jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "15m" });
+
+const generateRefreshToken = (userId) =>
+  jwt.sign({ id: userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 
 const hashPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
@@ -19,7 +22,6 @@ export const registerUser = async ({ username, password }) => {
     throw err;
   }
 
-  // Check if user already exists
   const existing = await User.findOne({ username });
   if (existing) {
     const err = new Error("Username already exists");
@@ -29,8 +31,14 @@ export const registerUser = async ({ username, password }) => {
 
   const hashed = await hashPassword(password);
   const user = await User.create({ username, password: hashed });
-  const token = generateToken(user._id);
-  return { user, token };
+
+  const accessToken = generateAccessToken(user._id);
+  const refreshToken = generateRefreshToken(user._id);
+
+  user.refreshToken = refreshToken;
+  await user.save();
+
+  return { user, accessToken, refreshToken };
 };
 
 export const authenticateUser = async ({ username, password }) => {
@@ -56,6 +64,43 @@ export const authenticateUser = async ({ username, password }) => {
     throw err;
   }
 
-  const token = generateToken(user._id);
-  return { user, token };
+  const accessToken = generateAccessToken(user._id);
+  const refreshToken = generateRefreshToken(user._id);
+
+  user.refreshToken = refreshToken;
+  await user.save();
+
+  return { user, accessToken, refreshToken };
+};
+
+export const refreshAccessToken = async (token) => {
+    if (!token) {
+        const err = new Error("Refresh token required");
+        err.status = 401;
+        throw err;
+    }
+
+    const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (!user || user.refreshToken !== token) {
+        const err = new Error("Invalid refresh token");
+        err.status = 403;
+        throw err;
+    }
+
+    const accessToken = generateAccessToken(user._id);
+    return { accessToken };
+};
+
+export const logoutUser = async (token) => {
+    if (!token) return;
+
+    const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (user) {
+        user.refreshToken = null;
+        await user.save();
+    }
 };
