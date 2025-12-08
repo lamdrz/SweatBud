@@ -8,7 +8,9 @@ services:
     environment:
       - MONGO_URI=mongodb://mongo:27017/sweatbud
       - MONGO_DB_NAME=sweatbud
+      - NODE_ENV=development
       - JWT_SECRET=123456789
+      - REFRESH_TOKEN_SECRET=987654321
       - PORT=5000
     volumes:
       - ./backend:/app
@@ -23,6 +25,8 @@ services:
     restart: always
     ports:
       - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5000
     volumes:
       - ./frontend:/app
       - /app/node_modules
