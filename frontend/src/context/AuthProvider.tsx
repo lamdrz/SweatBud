@@ -5,7 +5,7 @@ import type { AuthState } from "../types/auth";
 interface AuthContextType {
     auth: AuthState;
     setAuth: Dispatch<SetStateAction<AuthState>>;
-    login: (email: string, password: string) => Promise<void>;
+    login: (username: string, password: string) => Promise<void>;
     register: (payload: any) => Promise<void>;
     logout: () => Promise<void>;
 }
@@ -15,11 +15,11 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const AuthProvider = ({ children }: {children: ReactNode}) => {
     const [auth, setAuth] = useState<AuthState>({});
 
-    const login = useCallback(async (email: string, password: string) => {
+    const login = useCallback(async (username: string, password: string) => {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ username, password }),
             credentials: 'include' 
         });
 

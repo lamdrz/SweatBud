@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
   // Etats locaux pour gérer l'interface utilisateur
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,8 +18,9 @@ const LoginPage: React.FC = () => {
     setError(null);
 
     try {
-      await login(email, password);
+      await login(username, password);
       // La redirection se fera automatiquement si la logique est dans App.tsx
+      navigate('/profile');
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -34,13 +37,13 @@ const LoginPage: React.FC = () => {
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Email</label>
+          <label>Username</label>
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
-            autoComplete="email"
+            autoComplete="username"
           />
         </div>
         <div>
