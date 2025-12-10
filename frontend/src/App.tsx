@@ -9,15 +9,24 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import LogoutButton from './components/LogoutButton';
 import ProfilePage from './pages/ProfilePage';
+import ProtectedRoute from './components/ProtectedRoute';
+import PersistLogin from './components/PersistLogin';
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Root />} errorElement={<ErrorPage />}>
+        {/* public routes */}
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
-        <Route path="logout" element={<LogoutButton />} />
-        <Route path="profile" element={<ProfilePage />} />
+
+        {/* protected routes */}
+        <Route element={<PersistLogin />}>
+          <Route element={<ProtectedRoute />}>
+            <Route path="logout" element={<LogoutButton />} />
+            <Route path="profile" element={<ProfilePage />} />
+          </Route>
+        </Route>
       </Route>
     </Routes>
   );
