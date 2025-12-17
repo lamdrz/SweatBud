@@ -38,7 +38,7 @@
   color: var(--color-primary);
 }
 .navItem.active  {
-  border-top: solid 0.3rem var(--color-primary);
+  border-top: solid 4px var(--color-primary);
 }
 
 .linkText {
@@ -85,7 +85,7 @@
   
   .navItem.active  {
     border-top: none;
-    border-right: solid 0.3rem var(--color-primary);
+    border-right: solid 4px var(--color-primary);
   }
 
   .navMenu:hover .linkText {

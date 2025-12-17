@@ -37,4 +37,5 @@
 
 ## Link to Commits
 
-- github.com/Tadf0in/SweatBud/commit/774c69b31d7fcd1539c9c38ff0b6370fce110f55
+- https://github.com/Tadf0in/SweatBud/commit/774c69b31d7fcd1539c9c38ff0b6370fce110f55
+- https://github.com/Tadf0in/SweatBud/commit/b32fa22a5ce02fbb4b2ab13ecc59e2083fd10a87

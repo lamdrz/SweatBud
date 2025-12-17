@@ -1,0 +1,67 @@
+.profilePage {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f0f2f5;
+  }
+  
+  .profileHeader {
+    position: relative;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  
+  .profileContent {
+    background-color: white;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    margin-top: -30px;
+    padding: 2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profilePicture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    border: 5px solid white;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+  
+  .username {
+    margin-top: 60px; /* Space for profile picture */
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+  
+  .editButton {
+    margin-top: 2rem;
+    background-color: white;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+    padding: 0.75rem 1.5rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+  }
+  
+  .editButton:hover {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
