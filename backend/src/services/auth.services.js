@@ -90,7 +90,7 @@ export const refreshAccessToken = async (token) => {
     }
 
     const accessToken = generateAccessToken(user._id);
-    return { accessToken };
+    return { accessToken, user };
 };
 
 export const logoutUser = async (token) => {

@@ -1,0 +1,109 @@
+.authPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: var(--color-background);
+    padding: 4rem;
+    border-radius: 50px;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputGroup {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.inputGroup:first-of-type input {
+    border-radius: 20px 20px 0 0;
+}
+.inputGroup:last-of-type input {
+    border-radius: 0 0 20px 20px;
+}
+.inputGroup:last-of-type {
+    margin-bottom: 0.7rem;
+}
+
+.icon {
+    position: relative;
+    color: var(--color-primary);
+    left: 2rem;
+}
+.icon * {
+    color: inherit;
+}
+
+.input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem; /* Padding left to make space for icon */
+    border: 1px solid #ccc;
+    background-color: var(--color-background);
+}
+.input::placeholder {
+    color: #666;
+}
+
+.forgotPassword {
+    align-self: flex-end;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+.forgotPassword:hover {
+    text-decoration: underline;
+}
+
+.error {
+    color: var(--color-error);
+    margin-bottom: 1rem;
+}
+
+.submitButton {
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    width: 50%;
+    align-self: center;
+    border: 2px solid var(--color-primary);
+    border-radius: 50px;
+    background: none;
+    color: var(--color-primary);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.submitButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.submitButton:not(:disabled):hover {
+    background-color: var(--color-primary);
+    color: var(--color-background);
+}
+
+.bottomLink {
+    margin-top: 1.5rem;
+}
+.bottomLink a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+.bottomLink a:hover {
+  text-decoration: underline;
+}

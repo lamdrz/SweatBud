@@ -29,9 +29,9 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             throw new Error(data.message || "Erreur lors de la connexion");
         }
 
-        const { accessToken, user: userData } = data;
-        
-        setAuth({ user: userData, accessToken });
+        if (data.accessToken && data.user) {
+            setAuth({ user: data.user, accessToken: data.accessToken });
+        }
     }, []);
 
     const register = useCallback(async (payload: any) => {
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
         }
         
         if (data.accessToken && data.user) {
-             setAuth({ user: data.user, accessToken: data.accessToken });
+            setAuth({ user: data.user, accessToken: data.accessToken });
         }
     }, []);
 

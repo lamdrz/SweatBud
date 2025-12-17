@@ -1,9 +1,8 @@
 import React from 'react';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 
 const ProfilePage: React.FC = () => {
     const { auth } = useAuth();
-    console.log("Auth data:", auth);
     const user = auth?.user;
 
     if (!user) {

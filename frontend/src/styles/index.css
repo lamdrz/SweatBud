@@ -1,0 +1,21 @@
+:root {
+  --color-primary: #FF6565;
+  --color-background: #f5f5f5;
+  --color-text: #272626;
+  --color-error: red;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  color: var(--color-text);
+}
+
+.App {
+  background-image: url('../assets/images/mountain-background.jpg');
+  background-size: cover;
+  background-position: center top;
+  min-height: 100vh;
+}

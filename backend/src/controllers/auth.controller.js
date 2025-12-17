@@ -23,8 +23,8 @@ export const login = async (req, res) => {
 export const refresh = async (req, res) => {
     const { refreshToken } = req.cookies;
     try {
-        const { accessToken } = await refreshAccessToken(refreshToken);
-        res.status(200).json({ accessToken });
+        const { accessToken, user } = await refreshAccessToken(refreshToken);
+        res.status(200).json({ accessToken, user: { id: user._id, username: user.username } });
     } catch (err) {
         res.status(err.status || 500).json({ message: err.message || "Internal Server Error" });
     }
