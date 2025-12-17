@@ -3,6 +3,7 @@
   --color-background: #f5f5f5;
   --color-text: #272626;
   --color-error: red;
+  --nav-size: 60px;
 }
 
 * {
