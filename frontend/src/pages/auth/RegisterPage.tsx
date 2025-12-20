@@ -1,6 +1,7 @@
 import { useAuth } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
-import AuthForm, { AuthFormField } from '../../components/auth/AuthForm';
+import AuthForm from '../../components/auth/AuthForm';
+import type { AuthFormField } from '../../components/auth/AuthForm';
 import { faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 
 const RegisterPage: React.FC = () => {

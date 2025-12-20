@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './AuthForm.module.css';
-import backgroundImage from '../../assets/images/mountain-background.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 export interface AuthFormField {
   name: string;
   type: 'text' | 'email' | 'password';
   placeholder: string;
-  icon: string;
+  icon: IconProp;
 }
 
 interface AuthFormProps {
@@ -72,7 +72,6 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 value={formData[field.name]}
                 onChange={handleChange}
                 required
-                autoComplete={field.autoComplete}
                 placeholder={field.placeholder}
                 className={styles.input}
               />

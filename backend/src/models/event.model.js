@@ -9,6 +9,7 @@ const eventSchema = new mongoose.Schema({
     description: { type: String },
     max: { type: Number },
     medias: [{ type: String }],
+    createdAt: { type: Date, default: Date.now },
 });
  
 const Event = mongoose.model("Event", eventSchema);

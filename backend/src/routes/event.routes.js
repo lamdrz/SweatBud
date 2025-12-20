@@ -10,7 +10,7 @@ router.get('/', EventController.getAll);
 router.get('/:id', EventController.getById);
 
 // Protected routes
-router.post('/', authenticate, EventController.create);
+router.post('/', authenticate, isEventOwner, EventController.create);
 router.put('/:id', authenticate, isEventOwner, EventController.update);
 router.delete('/:id', authenticate, isEventOwner, EventController.delete);
 

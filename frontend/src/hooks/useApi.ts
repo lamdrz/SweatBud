@@ -14,7 +14,7 @@ export default function useApi<T>(endpoint: string, options: ApiOptions = {}): A
     const [loading, setLoading] = useState<boolean>(options.autoRun ?? true);
 
     // Fonction principale qui fait l'appel
-    const execute = useCallback(async (bodyData?: any) => {
+    const execute = useCallback(async (bodyData?: Record<string, unknown>) => {
         setLoading(true);
         setError(null);
 
@@ -50,7 +50,7 @@ export default function useApi<T>(endpoint: string, options: ApiOptions = {}): A
                     config.headers = headers;
                     
                     response = await fetch(`${BASE_URL}${endpoint}`, config);
-                } catch (refreshErr) {
+                } catch {
                     throw new Error("Session expirée, veuillez vous reconnecter.");
                 }
             }

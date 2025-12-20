@@ -1,7 +1,8 @@
 import { useAuth } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
-import AuthForm, { AuthFormField } from '../../components/auth/AuthForm';
-import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import AuthForm from '../../components/auth/AuthForm';
+import type { AuthFormField } from '../../components/auth/AuthForm';
+import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 
 const LoginPage: React.FC = () => {
   const { login } = useAuth();
