@@ -20,7 +20,9 @@ back :
 ## AI Tool Usage This Week
 
 - Aide ownership.middleware.js
+- Refactor login + register to one parent class
 - Génèrer des données bidons pour tester
+- Fix warnings eslint
 
 
 ## Plan for Next Week

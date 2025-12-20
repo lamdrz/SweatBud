@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
 import ErrorPage from './components/errors/ErrorPage';
+import Error404Page from './components/errors/Error404Page';
 import Root from './components/layout/Root';
 
 import HomePage from './pages/home/HomePage';
@@ -40,6 +41,7 @@ function App() {
             <Route path="logout" element={<LogoutButton />} />
           </Route>
         </Route>
+        <Route path="*" element={<Error404Page />} />
       </Route>
     </Routes>
   );

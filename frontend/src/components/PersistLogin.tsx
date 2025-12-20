@@ -19,16 +19,18 @@ const PersistLogin = () => {
                 console.error(err);
             }
             finally {
-                isMounted && setIsLoading(false);
+                if (isMounted) {
+                    setIsLoading(false);
+                }
             }
         }
 
-        !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
+        (() => !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false))();
 
         return () => {
             isMounted = false
         };
-    }, [])
+    }, [auth?.accessToken, refresh])
 
     return (
         <>

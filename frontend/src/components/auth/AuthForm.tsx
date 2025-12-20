@@ -21,6 +21,8 @@ interface AuthFormProps {
   showForgotPassword?: boolean;
 }
 
+// AI-ASSISTED
+// Prompt : Refactor login and register pages to a common AuthForm
 const AuthForm: React.FC<AuthFormProps> = ({
   title,
   fields,
