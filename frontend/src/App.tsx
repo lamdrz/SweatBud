@@ -1,5 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+
 import ErrorPage from './components/errors/ErrorPage';
 import Error404Page from './components/errors/Error404Page';
 import Root from './components/layout/Root';
@@ -18,6 +21,7 @@ import PersistLogin from './components/PersistLogin';
 import RedirectIfAuth from './components/RedirectIfAuth';
 
 function App() {
+  library.add(fas);
   return (
     <Routes>
       <Route path="/" element={<Root />} errorElement={<ErrorPage />}>

@@ -8,8 +8,5 @@
 .homePage > div {
     width: 90%;
     max-width: 700px;
-}
-
-.filters {
     background-color: var(--color-background);
 }

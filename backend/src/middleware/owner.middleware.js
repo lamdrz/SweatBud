@@ -1,6 +1,6 @@
 import Event from "../models/event.model.js";
 
-// AI-ASSISTED
+// AI-ASSISTED : Copilot (modèle Gemini 3 Pro)
 // Prompt : J'aimerais que seul le créateur d'un event puisse le modifier/supprimer, je ne comprends pas ce qui ne va pas avec mon middleware
 // Output : lignes 13 à 17
 // Modification : Adaptation pour POST

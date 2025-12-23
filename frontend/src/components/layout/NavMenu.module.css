@@ -51,6 +51,7 @@
   .pageContent {
     margin-bottom: 0;
     margin-left: var(--nav-size);
+    transition: margin-left 0.2s;
   }
 
   .navMenu {

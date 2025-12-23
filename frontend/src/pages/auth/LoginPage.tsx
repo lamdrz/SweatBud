@@ -2,15 +2,14 @@ import { useAuth } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthForm from '../../components/auth/AuthForm';
 import type { AuthFormField } from '../../components/auth/AuthForm';
-import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 
 const LoginPage: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const fields: AuthFormField[] = [
-    { name: 'username', type: 'text', placeholder: "Nom d'utilisateur", icon: faUser },
-    { name: 'password', type: 'password', placeholder: 'Mot de passe', icon: faLock },
+    { name: 'username', type: 'text', placeholder: "Nom d'utilisateur", icon: 'user' },
+    { name: 'password', type: 'password', placeholder: 'Mot de passe', icon: 'lock' },
   ];
 
   const handleSubmit = async (formData: Record<string, string>) => {

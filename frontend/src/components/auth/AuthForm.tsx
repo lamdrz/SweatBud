@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './AuthForm.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { IconProp } from '@fortawesome/fontawesome-svg-core';
+import type { IconName } from '@fortawesome/fontawesome-svg-core';
 
 export interface AuthFormField {
   name: string;
   type: 'text' | 'email' | 'password';
   placeholder: string;
-  icon: IconProp;
+  icon: IconName;
 }
 
 interface AuthFormProps {
