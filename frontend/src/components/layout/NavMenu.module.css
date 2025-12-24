@@ -49,7 +49,7 @@
 /* Desktop */
 @media (min-width: 750px) {
   .pageContent {
-    margin-bottom: 0;
+    padding-bottom: 0;
     margin-left: var(--nav-size);
     transition: margin-left 0.2s;
   }
@@ -92,13 +92,9 @@
   .navMenu:hover .linkText {
     display: inline;
     margin-left: 1rem;
-    font-weight: bold;
+    font-weight: 600;
     vertical-align: middle;
     color: var(--color-text);
     margin-top: 0.3rem;
-  }
-
-  .pageContent:has(+ .navMenu:hover) {
-    margin-left: 200px;
   }
 }
