@@ -4,6 +4,7 @@ import type { IconName } from '@fortawesome/free-solid-svg-icons';
 import type { Event } from '../../types/models';
 import useApi from '../../hooks/useApi';
 import useAuth from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 interface EventData extends Omit<Event, 'user'> {
     user: {
@@ -17,6 +18,8 @@ interface EventData extends Omit<Event, 'user'> {
 const EventListElement = ({event}: {key: string, event: EventData}) => {
     const { auth } = useAuth();
     const user = auth?.user;
+
+    const navigate = useNavigate();
 
     const defaultAvatar = "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png";
 
@@ -41,10 +44,30 @@ const EventListElement = ({event}: {key: string, event: EventData}) => {
         depart = `${formattedDate} - ${departTime}`;
     }
 
-    const joinHandler = async () => {
+    const handleDetails = () => {
+        navigate('/events/' + event._id);
+    }
+
+    const isOwner = user?.id === event.user._id;
+    const hasJoined = event.attendees?.some(a => a.user._id === user?.id);
+    const isFull = event.max && event.attendees ? event.attendees.length >= event.max : false;
+    const isPast = new Date() > eventDate;
+
+    const handlerProfile = (e: React.MouseEvent<HTMLImageElement>) => {
+        e.stopPropagation();
+        navigate('/profile/' + event.user._id);
+    }
+
+    const handleMessage = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        navigate('/chat/' + event.user._id);
+    }
+
+    const handleJoin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         try {
             await joinEvent();
-            alert("Inscription réussie !");
+            navigate('/events/' + event._id);
         } catch (err) {
             if (err instanceof Error) {
                 alert(err.message);
@@ -53,13 +76,13 @@ const EventListElement = ({event}: {key: string, event: EventData}) => {
     };
 
     return (
-        <div className={styles.card}>
+        <div className={styles.card} onClick={handleDetails}>
             <div className={styles.top}>
                 <div className={styles.topLeft}>
-                    <div className={styles.userInfos}>
+                    <div className={styles.userInfos} onClick={handlerProfile}>
                         <img 
                             src={event.user.profilePicture || defaultAvatar} 
-                            alt="avatar" 
+                            alt={event.user.username} 
                             className={styles.avatar} 
                         />
                         <div className={styles.userDetails}>
@@ -93,18 +116,22 @@ const EventListElement = ({event}: {key: string, event: EventData}) => {
                 </div>
             </div>
 
-            { eventDate > today &&
+            { !isPast ?
             <div className={styles.actions}>
-                <button className={`${styles.button} ${styles.contactBtn}`}>Contacter</button>
-                { event.attendees && user && event.attendees.some(attendee => attendee.user._id === user.id) ?
-                    <button className={`${styles.button} ${styles.contactBtn}`} disabled>Déjà rejoint</button>
-                :
+                { !isOwner && 
+                    <button className={`${styles.button} ${styles.contactBtn}`} onClick={handleMessage}>Contacter</button>
+                }
+                
+                { hasJoined ?
+                    <button className={`${styles.button} ${styles.contactBtn}`} disabled>Déjà inscrit</button>
+                : !isOwner &&
                     <button className={`${styles.button} ${styles.joinBtn}`} 
-                        disabled={(event.attendees && event.max ? event.attendees.length >= event.max : false) || joinLoading}
-                        onClick={joinHandler}
-                    >{ joinLoading ? '...' : 'Rejoindre'}</button>
+                        disabled={isFull || joinLoading}
+                        onClick={handleJoin}
+                    >{ joinLoading ? '...' : isFull ? 'Complet' : 'Rejoindre'}</button>
                 }
             </div>
+            : <p className={styles.pastMessage}>Cet événement est passé.</p>
             }
         </div>
     );

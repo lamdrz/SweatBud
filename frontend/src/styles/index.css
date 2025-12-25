@@ -16,6 +16,7 @@
 
 .App {
   background-image: url('../assets/images/mountain-background.jpg');
+  background-attachment: fixed;
   background-size: cover;
   background-position: center top;
   min-height: 100vh;

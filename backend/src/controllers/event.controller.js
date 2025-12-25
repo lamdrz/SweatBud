@@ -10,7 +10,7 @@ class EventController extends BaseController {
         return query
             .populate({
                 path: 'user',
-                select: 'username birthdate'
+                select: 'username birthdate profilePicture'
             })
             .populate({
                 path: 'sport',
@@ -18,7 +18,7 @@ class EventController extends BaseController {
             })
             .populate({
                 path: 'attendees.user',
-                select: 'username'
+                select: 'username profilePicture'
             });
     }
 
@@ -38,7 +38,8 @@ class EventController extends BaseController {
             user: user ? {
                 _id: user._id,
                 username: user.username,
-                age: age
+                age: age,
+                profilePicture: user.profilePicture
             } : null,
         };
     }

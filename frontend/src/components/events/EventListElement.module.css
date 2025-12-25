@@ -7,6 +7,10 @@
     max-width: 500px;
     margin: 0 auto;
     gap: 1rem;
+    transition: background-color 0.3s;
+}
+.card:hover {
+    background-color: #f2f2f2;
 }
 
 .top {
@@ -39,6 +43,7 @@
     display: flex;
     gap: 0.8rem;
     align-items: center;
+    cursor: pointer;
 }
 
 .avatar {
@@ -164,6 +169,13 @@
     background: var(--color-background);
     border: solid 1px var(--color-primary);
     color: var(--color-primary);
+}
+
+.pastMessage {
+    margin-top: 1rem;
+    color: var(--color-primary);
+    font-style: italic;
+    text-align: center;
 }
 
 @media (min-width: 750px) {

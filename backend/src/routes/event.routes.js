@@ -15,6 +15,5 @@ router.put('/:id', authenticate, isEventOwner, EventController.update);
 router.delete('/:id', authenticate, isEventOwner, EventController.delete);
 
 router.post('/:id/attend', authenticate, EventController.attend);
-// router.get('/:id/attendees', EventController.getAttendees);
 
 export default router;

@@ -72,7 +72,6 @@ Sportifs de tous niveaux, coachs sportifs, nouveaux dans une ville.
     * /api/events GET, !POST 
     * /api/events/:id GET, !PUT, !DELETE
     * /api/events/:id/attend POST
-    * /api/events/:id/attendees GET, PUT
 
 * Sports
     * /api/sports/ GET, !!POST

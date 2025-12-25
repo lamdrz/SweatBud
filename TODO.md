@@ -6,20 +6,24 @@ Obligatoire :
 [ ] Page profil
     [ ] Infos profil
     [ ] Annonces par ce user
-[ ] Page modifier profil
+    [ ] Page modifier profil
 [-] Page d'accueil avec liste d'evenement
     [X] Liste d'évenements
-    [ ] Bouton contacter
+    [X] Bouton contacter
     [X] Bouton rejoindre
     [ ] Carte
     [ ] Photos
-    [ ] Profil
+    [X] Profil
+[-] Page détails evenement
+    [X] Infos
+    [X] Liste participants
+    [ ] Supprimer annonce
+    [ ] Se retirer
 [ ] Filtre evenements
 [ ] Messages
+    [ ] List messages
+    [ ] Conversations
 [ ] Carte
-[ ] Supprimer annonce
-[ ] S'inscrire à une annonce
-[ ] Se retirer
 
 Ce serait bien :
 [ ] Pagination / au scroll

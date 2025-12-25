@@ -19,6 +19,7 @@ import EditProfilePage from './pages/profile/EditProfilePage';
 import ProtectedRoute from './components/ProtectedRoute';
 import PersistLogin from './components/PersistLogin';
 import RedirectIfAuth from './components/RedirectIfAuth';
+import EventDetails from './components/events/EventDetails';
 
 function App() {
   library.add(fas);
@@ -35,6 +36,7 @@ function App() {
           {/* protected routes */}
           <Route element={<ProtectedRoute />}>
             <Route index element={<HomePage />} />
+            <Route path="events/:id" element={<EventDetails />} />
             <Route path="chat" element={<ChatPage />} />
             <Route path="add" element={<AddPage />} />
             <Route path="map" element={<MapPage />} />
