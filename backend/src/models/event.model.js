@@ -9,6 +9,10 @@ const eventSchema = new mongoose.Schema({
     description: { type: String },
     max: { type: Number },
     medias: [{ type: String }],
+    attendees: [{ 
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        joinedAt: { type: Date, default: Date.now }
+    }],
     createdAt: { type: Date, default: Date.now },
 });
  

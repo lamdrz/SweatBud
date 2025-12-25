@@ -28,7 +28,7 @@ export interface Event {
     date: Date;
     description?: string;
     max: number;
-    attendees?: { _id: string }[];
+    attendees?: { _id: string, user: User, joinedAt: Date }[];
     medias?: string[];
     createdAt?: Date;
 }

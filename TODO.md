@@ -4,8 +4,16 @@ Obligatoire :
 [X] Navbar
 [X] Page ajouter
 [ ] Page profil
+    [ ] Infos profil
+    [ ] Annonces par ce user
 [ ] Page modifier profil
 [-] Page d'accueil avec liste d'evenement
+    [X] Liste d'évenements
+    [ ] Bouton contacter
+    [X] Bouton rejoindre
+    [ ] Carte
+    [ ] Photos
+    [ ] Profil
 [ ] Filtre evenements
 [ ] Messages
 [ ] Carte
@@ -29,3 +37,4 @@ En plus :
 [ ] AJouter tracé GPX
 [ ] Notifications
 [ ] Messagerie instantanée (sockets)
+[ ] Messages chiffrés

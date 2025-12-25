@@ -11,6 +11,7 @@
 
 .top {
     display: flex;
+    gap: 1rem;
 }
 
 .topLeft {
@@ -19,7 +20,6 @@
     gap: 1rem;
     max-width: 70%;
 }
-
 
 .medias {
     display: flex;
@@ -88,6 +88,7 @@
     margin-top: 1rem;
     font-size: 1rem;
     color: var(--color-text);
+    text-align: justify;
 }
 
 .infoRow {
@@ -126,17 +127,22 @@
 }
 
 .button {
-    padding: 0.6rem 3rem;
+    padding: 2% 12%;
     border-radius: 20px;
     border: none;
     font-weight: bold;
     cursor: pointer;
     text-align: center;
-    font-size: 1rem;
+    font-size: 0.9rem;
     transition: 0.2s;
 }
 
-.button:hover {
+.button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.button:hover:not(:disabled) {
     transform: scale(1.02);
 }
 
@@ -145,7 +151,7 @@
     border: 1px solid var(--color-primary);
     color: var(--color-primary);
 }
-.contactBtn:hover {
+.contactBtn:hover:not(:disabled) {
     background: var(--color-primary);
     color: var(--color-background);
 }
@@ -154,7 +160,7 @@
     background: var(--color-primary);
     color: var(--color-background);
 }
-.joinBtn:hover {
+.joinBtn:hover:not(:disabled) {
     background: var(--color-background);
     border: solid 1px var(--color-primary);
     color: var(--color-primary);

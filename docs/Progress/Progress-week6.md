@@ -7,11 +7,12 @@
 ## Accomplishments This Week
 
 - Page ajouter évenment
-- Page d'accueil
+- Page d'accueil avec liste d'evenements, rejoindre
 
 ## Challenges Faced
 
-- 
+- Utilisation de useApi pour POST
+- Comprendre les fonctionnement des hooks
 
 ## AI Tool Usage This Week
 

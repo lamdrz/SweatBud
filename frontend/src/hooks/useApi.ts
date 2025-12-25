@@ -56,14 +56,22 @@ export default function useApi<T>(endpoint: string, options: ApiOptions = {}): A
             }
 
             if (!response.ok) {
-                throw new Error(`Erreur HTTP: ${response.status}`);
+                let errorMessage = `Erreur HTTP: ${response.status}`;
+                try {
+                    const errorBody = await response.json();
+                    if (errorBody.message) errorMessage = errorBody.message;
+                } catch { /* empty */ }
+                throw new Error(errorMessage);
             }
 
             const jsonData = await response.json();
             setData(jsonData);
+            return jsonData;
 
         } catch (err) {
-            setError(err instanceof Error ? err : new Error("Une erreur inconnue est survenue"));
+            const errorObj = err instanceof Error ? err : new Error("Une erreur inconnue est survenue");
+            setError(errorObj);
+            throw errorObj;
         } finally {
             setLoading(false);
         }
