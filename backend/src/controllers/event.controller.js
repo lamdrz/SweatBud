@@ -51,7 +51,7 @@ class EventController extends BaseController {
 
             const results = docs.map(doc => this._formatEvent(doc));
 
-            res.status(200).json(results);
+            this.success(res, results);
         } catch (err) {
             this.error(res, err);
         }
@@ -63,12 +63,14 @@ class EventController extends BaseController {
             const doc = await this._populateEvent(query).lean();
 
             if (!doc) {
-                return res.status(404).json({ message: 'Event not found' });
+                const err = new Error('Event not found');
+                err.status = 404;
+                throw err;
             }
 
             const result = this._formatEvent(doc);
 
-            res.status(200).json(result);
+            this.success(res, result);
         } catch (err) {
             this.error(res, err);
         }
@@ -80,10 +82,14 @@ class EventController extends BaseController {
             const userId = req.user.id;
             const event = await this.model.findById(eventId);
             if (!event) {
-                return res.status(404).json({ message: 'Event not found' });
+                const err = new Error('Event not found');
+                err.status = 404;
+                throw err;
             }
             if (event.attendees && event.max && event.attendees.length >= event.max) {
-                return res.status(400).json({ message: 'Event is full' });
+                const err = new Error('Event is full');
+                err.status = 400;
+                throw err;
             }
             
             const isAttending = event.attendees.some(
@@ -91,12 +97,14 @@ class EventController extends BaseController {
             );
 
             if (isAttending) {
-                return res.status(400).json({ message: 'User already attending the event' });
+                const err = new Error('User already attending the event');
+                err.status = 400;
+                throw err;
             }
             
             event.attendees.push({ user: userId });
             await event.save();
-            res.status(200).json({ message: 'User added to event attendees' });
+            this.success(res, null, 200);
         } catch (err) {
             this.error(res, err);
         }

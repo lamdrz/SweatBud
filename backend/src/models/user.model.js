@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
 	firstName: { type: String },
 	lastName: { type: String },
 	city: { type: String },
-	sports: [{ type: mongoose.Schema.Types.ObjectId, ref: "Sport" }],
+	sports: [{ type: mongoose.Schema.Types.ObjectId, ref: "Sport" } ],
 	bio: { type: String },
 	birthdate: { type: Date },
 	gender: { type: String, enum: ['Male', 'Female', 'Other'] },

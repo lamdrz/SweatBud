@@ -7,16 +7,20 @@
 ## Accomplishments This Week
 
 - Page ajouter évenment
-- Page d'accueil avec liste d'evenements, rejoindre
+- Page d'accueil avec liste d'evenements
+- S'inscrire à un evenement
+- Page détails evenement
+- Page profile user
 
 ## Challenges Faced
 
 - Utilisation de useApi pour POST
 - Comprendre les fonctionnement des hooks
+- Jointures mongoDB (.populate marche une fois sur 2)
 
 ## AI Tool Usage This Week
 
-- 
+- Gemini 3 PRO : Comprendre pourquoi ma jointure na marchait pas (mon code était bon au final c'était un ID qui pointait vers rien dans la BDD)
 
 
 ## Plan for Next Week

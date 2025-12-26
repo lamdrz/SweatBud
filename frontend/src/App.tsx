@@ -35,16 +35,22 @@ function App() {
 
           {/* protected routes */}
           <Route element={<ProtectedRoute />}>
+            
+            {/* Nav */}
             <Route index element={<HomePage />} />
-            <Route path="events/:id" element={<EventDetails />} />
             <Route path="chat" element={<ChatPage />} />
             <Route path="add" element={<AddPage />} />
             <Route path="map" element={<MapPage />} />
-            <Route path="profile">
+            <Route path="me">
               <Route index element={<ProfilePage />} />
               <Route path="edit" element={<EditProfilePage />} />
             </Route>
-            <Route path="logout" element={<LogoutButton />} />
+
+            {/* Autre */}
+            <Route path="events/:id" element={<EventDetails />} />
+            <Route path="profile/:id" element={<ProfilePage />} />
+            
+            <Route path="logout" element={<LogoutButton />} /> {/* Temporaire */}
           </Route>
         </Route>
         <Route path="*" element={<Error404Page />} />

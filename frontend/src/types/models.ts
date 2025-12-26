@@ -1,3 +1,5 @@
+import type { IconName } from "@fortawesome/free-solid-svg-icons";
+
 export interface User {
     _id: string;
     username: string;
@@ -16,7 +18,7 @@ export interface User {
 export interface Sport {
     _id: string;
     name: string;
-    icon?: string;
+    icon?: IconName;
 }
 
 export interface Event {

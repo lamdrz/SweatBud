@@ -23,7 +23,7 @@ const NavMenu: React.FC = () => {
           <FontAwesomeIcon icon='location-dot' size="lg" />
           <span className={styles.linkText}>Carte</span>
         </NavLink>
-        <NavLink to="/profile" className={({ isActive }) => isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}>
+        <NavLink to="/me" className={({ isActive }) => isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}>
           <FontAwesomeIcon icon='user' size="lg" />
           <span className={styles.linkText}>Profil</span>
         </NavLink>

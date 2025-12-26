@@ -4,6 +4,6 @@ import { authenticate } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-router.get("/me", authenticate, UserController.getProfile);
+router.get("/:id", authenticate, UserController.getProfile);
 
 export default router;

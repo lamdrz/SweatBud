@@ -15,7 +15,7 @@ const RegisterPage: React.FC = () => {
 
   const handleSubmit = async (formData: Record<string, string>) => {
     await register(formData.username, formData.email, formData.password);
-    navigate('/login');
+    navigate('/');
   };
 
   return (

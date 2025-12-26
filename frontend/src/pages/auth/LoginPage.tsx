@@ -14,7 +14,7 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = async (formData: Record<string, string>) => {
     await login(formData.username, formData.password);
-    navigate('/profile');
+    navigate('/');
   };
 
   return (

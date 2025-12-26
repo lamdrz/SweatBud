@@ -30,15 +30,17 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  color: var(--color-primary);
+  color: #333;
   height: 100%;
   width: 5rem;
+  transition: color 0.2s;
 }
-.navItem svg * {
-  color: var(--color-primary);
+.navItem * {
+  color: inherit;
 }
 .navItem.active  {
-  border-top: solid 4px var(--color-primary);
+  /* border-top: solid 4px var(--color-primary); */
+  color: var(--color-primary);
 }
 
 .linkText {
@@ -86,7 +88,7 @@
   
   .navItem.active  {
     border-top: none;
-    border-right: solid 4px var(--color-primary);
+    /* border-right: solid 4px var(--color-primary); */
   }
 
   .navMenu:hover .linkText {

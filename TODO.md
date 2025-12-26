@@ -3,7 +3,7 @@ Obligatoire :
 [X] Register
 [X] Navbar
 [X] Page ajouter
-[ ] Page profil
+[-] Page profil
     [ ] Infos profil
     [ ] Annonces par ce user
     [ ] Page modifier profil
