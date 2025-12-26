@@ -13,7 +13,6 @@ import AddPage from './pages/add/AddPage';
 import MapPage from './pages/map/MapPage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
-import LogoutButton from './components/auth/LogoutButton';
 import ProfilePage from './pages/profile/ProfilePage';
 import EditProfilePage from './pages/profile/EditProfilePage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -49,8 +48,6 @@ function App() {
             {/* Autre */}
             <Route path="events/:id" element={<EventDetails />} />
             <Route path="profile/:id" element={<ProfilePage />} />
-            
-            <Route path="logout" element={<LogoutButton />} /> {/* Temporaire */}
           </Route>
         </Route>
         <Route path="*" element={<Error404Page />} />

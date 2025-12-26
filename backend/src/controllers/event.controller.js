@@ -95,16 +95,51 @@ class EventController extends BaseController {
             const isAttending = event.attendees.some(
                 att => att.user && att.user.toString() === userId
             );
-
             if (isAttending) {
-                const err = new Error('User already attending the event');
-                err.status = 400;
-                throw err;
+                this.success(res, null, 208);
+                return;
             }
             
             event.attendees.push({ user: userId });
             await event.save();
             this.success(res, null, 200);
+        } catch (err) {
+            this.error(res, err);
+        }
+    }
+
+    unattend = async (req, res) => {
+        try {
+            const eventId = req.params.id;
+            const userId = req.user.id;
+            const event = await this.model.findById(eventId);
+            if (!event) {
+                const err = new Error('Event not found');
+                err.status = 404;
+                throw err;
+            }
+            const initialLength = event.attendees.length;
+            event.attendees = event.attendees.filter(
+                att => att.user && att.user.toString() !== userId
+            );
+            if (event.attendees.length === initialLength) {
+                const err = new Error('User is not attending the event');
+                err.status = 400;
+                throw err;
+            }
+            await event.save();
+            this.success(res, null, 200);
+        } catch (err) {
+            this.error(res, err);
+        }
+    }
+
+    create = async (req, res) => {
+        try {
+            const item = await this.model.create(req.body);
+            item.attendees.push({ user: item.user }); // Auto attend
+            await item.save();
+            this.success(res, item, 201);
         } catch (err) {
             this.error(res, err);
         }

@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate, useParams } from 'react-router-dom';
 import useApi from '../../hooks/useApi';
 import styles from './ProfilePage.module.css';
+import actionStyles from '../../components/ui/UI.module.css';
 import backgroundImage from '../../assets/images/mountain-background.jpg';
 import type { Sport } from '../../types/models';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from '../../components/ui/Loading';
+import ActionMenu from '../../components/ui/ActionMenu';
 
 const ProfilePage: React.FC = () => {
     const { auth } = useAuth();
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+
+    const { logout } = useAuth();
+      const [logoutLoading, setLogoutLoading] = useState(false);
+    
+      const handleLogout = async () => {
+        setLogoutLoading(true);
+        try {
+          await logout();
+        } catch (error) {
+          console.error("Failed to logout", error);
+        } finally {
+          setLogoutLoading(false);
+        }
+      }
     
     const currentUser = auth?.user; 
     const targetId = id || currentUser?.id;
@@ -37,6 +53,24 @@ const ProfilePage: React.FC = () => {
 
     return (
         <div className={styles.profilePage}>
+
+            <ActionMenu>
+            {isOwnProfile ? <>
+                <button className={`${actionStyles.button}`} 
+                    onClick={() => navigate('/me/edit')}>
+                    <FontAwesomeIcon icon='pen' /> Modifier
+                </button>
+                <button className={`${actionStyles.button} ${actionStyles.redBtn}`} 
+                    onClick={handleLogout} disabled={logoutLoading}>
+                    <FontAwesomeIcon icon='sign-out-alt' /> { logoutLoading ? 'Déconnexion...' : 'Déconnexion' }
+                </button></>
+            :
+                <button className={`${actionStyles.button} ${actionStyles.redBtn}`} 
+                    onClick={() => console.log('Report user')}>
+                    <FontAwesomeIcon icon='flag' /> Signaler
+                </button>
+            }
+            </ActionMenu>
 
             <div className={styles.profileHeader}>
                 <img src={backgroundImage} alt="background" className={styles.backgroundImage} />
@@ -72,17 +106,6 @@ const ProfilePage: React.FC = () => {
                 }
 
                 { user.bio && <span className={styles.bio}>{user.bio}</span> }
-
-                {isOwnProfile && (
-                    <div className={styles.actions}>
-                        <button className={`${styles.button} ${styles.editBtn}`} onClick={() => navigate('/me/edit')}>
-                            <FontAwesomeIcon icon='pen' /> Modifier
-                        </button>
-                        <button className={`${styles.button} ${styles.logoutBtn}`} onClick={() => navigate('/logout')}>
-                            <FontAwesomeIcon icon='sign-out-alt' /> Déconnexion
-                        </button>
-                    </div>
-                )}
             </div>
         </div>
     );

@@ -94,7 +94,6 @@ const AddPage: React.FC = () => {
                   <option key={sport._id} value={sport._id}>{sport.name}</option>
                 ))
               )}
-              <option key={0} value={undefined}>Autre</option>
             </select>
           </div>
 

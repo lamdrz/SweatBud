@@ -4,7 +4,7 @@ Obligatoire :
 [X] Navbar
 [X] Page ajouter
 [-] Page profil
-    [ ] Infos profil
+    [X] Infos profil
     [ ] Annonces par ce user
     [ ] Page modifier profil
 [-] Page d'accueil avec liste d'evenement
