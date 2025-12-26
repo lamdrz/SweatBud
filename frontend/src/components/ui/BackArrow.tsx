@@ -9,7 +9,7 @@ const BackArrow = () => {
         <div className={`${styles.uiBtn} ${styles.backArrow}`}
             onClick={() => navigate(-1)}
         >
-            <FontAwesomeIcon icon="angle-left" />
+            <FontAwesomeIcon icon="chevron-left" />
         </div>
     );
 }

@@ -1,93 +1,98 @@
 .editProfilePage {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    background-color: #f0f2f5;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: auto;
+  background-color: var(--color-background);
+}
+
+.separator {
+  width: 10%;
+  border: solid 1px #ccc;
+  margin: 1rem 0;
+}
+
+.infoSection {
+  max-width: 500px;
+}
   
-  .profileHeader {
-    position: relative;
-    height: 200px;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-  }
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+}
   
-  .profileContent {
-    background-color: white;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    margin-top: -30px;
-    padding: 2rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.infoLabel {
+  font-weight: bold;
+}
   
-  .profilePicture {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background-color: #e0e0e0;
-    border: 5px solid white;
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-  }
+.infoValue {
+  color: #888;
+}
   
-  .username {
-    margin-top: 60px; /* Space for profile picture */
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: 2rem;
+.button {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: transform 0.2s;
+}
+.button:hover {
+  transform: scale(1.1);
+}
+.editBtn:hover {
+  transform: none;
+  text-decoration: underline;
+}
+
+.saveBtn {
+  margin-right: 1rem;
+}
+.cancelBtn {
+  color: var(--color-primary);
+}
+.cancelBtn * {
+  color: inherit
+}
+
+.input {
+  margin-top: 0.2rem;
+  padding: 0.2rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  width: 80%;
+}
+
+.sportsSelector {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0.5rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-style: italic;
+}
+.checkboxInput {
+  /* width: 16px;
+  height: 16px;
+  margin: 0 0.5rem;
+  accent-color: transparent; */
+  display: none;
+}
+.checkboxLabel:has(.checkboxInput:checked) {
+  font-style: normal;
+  * {
+    color: var(--color-primary);
   }
-  
-  .infoSection {
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .infoItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .infoLabel {
-    font-weight: bold;
-  }
-  
-  .infoValue {
-    color: #888;
-  }
-  
-  .editLink {
-    color: #e74c3c;
-    text-decoration: none;
-    font-size: 0.9rem;
-  }
-  
-  .saveButton {
-    margin-top: 2rem;
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .saveButton:hover {
-    background-color: #c0392b;
-  }
-  
+}

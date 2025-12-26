@@ -11,6 +11,7 @@
 - S'inscrire à un evenement
 - Page détails evenement
 - Page profile user
+- Page modifier profil
 
 ## Challenges Faced
 

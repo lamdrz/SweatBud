@@ -102,7 +102,7 @@ class EventController extends BaseController {
             
             event.attendees.push({ user: userId });
             await event.save();
-            this.success(res, null, 200);
+            this.success(res, null, 204);
         } catch (err) {
             this.error(res, err);
         }
@@ -128,7 +128,7 @@ class EventController extends BaseController {
                 throw err;
             }
             await event.save();
-            this.success(res, null, 200);
+            this.success(res, null, 204);
         } catch (err) {
             this.error(res, err);
         }

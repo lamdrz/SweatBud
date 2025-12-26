@@ -5,6 +5,7 @@ import type { ApiOptions, ApiResponse } from "../types/api";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
+// AI-ASSISTED : M'a aidé pour UseCallback et autoRun
 export default function useApi<T>(endpoint: string, options: ApiOptions = {}): ApiResponse<T> {
     const { auth } = useAuth();
     const refresh = useRefreshToken();
@@ -53,6 +54,11 @@ export default function useApi<T>(endpoint: string, options: ApiOptions = {}): A
                 } catch {
                     throw new Error("Session expirée, veuillez vous reconnecter.");
                 }
+            }
+
+            if (response.status === 204) {
+                setData(null);
+                return null as unknown as T;
             }
 
             if (!response.ok) {

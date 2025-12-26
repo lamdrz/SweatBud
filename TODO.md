@@ -6,7 +6,10 @@ Obligatoire :
 [-] Page profil
     [X] Infos profil
     [ ] Annonces par ce user
-    [ ] Page modifier profil
+    [-] Page modifier profil
+        [X] Modifier champs
+        [X] Modifier sports
+        [ ] Change password
 [-] Page d'accueil avec liste d'evenement
     [X] Liste d'évenements
     [X] Bouton contacter
@@ -17,8 +20,10 @@ Obligatoire :
 [-] Page détails evenement
     [X] Infos
     [X] Liste participants
+    [ ] Modifier annonce
     [ ] Supprimer annonce
     [ ] Se retirer
+    [ ] Retirer qqun
 [ ] Filtre evenements
 [ ] Messages
     [ ] List messages

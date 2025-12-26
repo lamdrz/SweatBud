@@ -90,7 +90,7 @@ const AddPage: React.FC = () => {
               {sportsLoading ? (
                 <option>Chargement...</option>
               ) : (
-                sports?.sort((a, b) => a.name.localeCompare(b.name)).map((sport) => (
+                sports?.map((sport) => (
                   <option key={sport._id} value={sport._id}>{sport.name}</option>
                 ))
               )}
