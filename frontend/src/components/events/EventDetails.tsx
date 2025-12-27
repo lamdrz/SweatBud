@@ -6,6 +6,7 @@ import Loading from "../ui/Loading";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { IconName } from '@fortawesome/free-solid-svg-icons';
 import styles from './EventDetails.module.css';
+import BackArrow from "../ui/BackArrow";
 
 // Interface matching the backend response for this specific endpoint
 interface EventData extends Omit<Event, 'user'> {
@@ -70,6 +71,8 @@ const EventDetails = () => {
     };
 
     return (<>
+        <BackArrow destination="/" />
+
         <div className={styles.medias}>
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmRoCJ8x1m-Bl6aFakEGrEIzEE4yIblWGVow&s" alt={event.location} />
         </div>

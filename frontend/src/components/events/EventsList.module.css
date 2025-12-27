@@ -3,3 +3,10 @@
     flex-direction: column;
     width: 100%;
 }
+
+.noEvents {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    font-style: italic;
+}

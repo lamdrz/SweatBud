@@ -5,7 +5,7 @@ import useApi from '../../hooks/useApi';
 import styles from './ProfilePage.module.css';
 import actionStyles from '../../components/ui/UI.module.css';
 import backgroundImage from '../../assets/images/mountain-background.jpg';
-import type { Sport } from '../../types/models';
+import type { Sport, UserProfile } from '../../types/models';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from '../../components/ui/Loading';
 import ActionMenu from '../../components/ui/ActionMenu';
@@ -31,16 +31,6 @@ const ProfilePage: React.FC = () => {
     
     const currentUser = auth?.user; 
     const targetId = id || currentUser?.id;
-
-    interface UserProfile {
-        _id: string;
-        username: string;
-        city?: string;
-        sports?: Sport[];
-        bio?: string;
-        age?: number;
-        profilePicture?: string;
-    }
 
     const { data: user, loading, error } = useApi<UserProfile>(targetId ? `/users/${targetId}` : '');
 

@@ -36,8 +36,10 @@ export const getOwnUserProfile = async (id) => {
         .select("-password -role -refreshToken -createdAt")
         .populate({
             path: "sports",
-            select: "name icon"
-        }).lean();
+            select: "name icon",
+            options: { sort: { name: 1 } }
+        })
+        .lean();
 
     if (!user) {
         const err = new Error("User not found");

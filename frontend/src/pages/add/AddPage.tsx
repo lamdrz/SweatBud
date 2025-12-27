@@ -79,7 +79,7 @@ const AddPage: React.FC = () => {
 
           {/* Sport */}
           <div className={styles.inputGroup}>
-            <FontAwesomeIcon icon={sports?.find(s => s._id === sportId)?.icon as IconName || 'heart-pulse'} className={styles.icon} />
+            <FontAwesomeIcon icon={sports?.find(s => s._id === sportId)?.icon || 'heart-pulse'} className={styles.icon} />
                     
             <select 
               className={styles.select}

@@ -4,7 +4,7 @@ const populateEvent = (query) => {
     return query
         .populate({
             path: 'user',
-            select: 'username birthdate profilePicture'
+            select: 'username birthdate profilePicture gender'
         })
         .populate({
             path: 'sport',
@@ -33,15 +33,72 @@ const formatEvent = (doc) => {
             _id: user._id,
             username: user.username,
             age: age,
+            gender: user.gender,
             profilePicture: user.profilePicture
         } : null,
     };
 };
 
-export const getAllEvents = async () => {
-    const query = Event.find().sort({ createdAt: -1 });
-    const docs = await populateEvent(query).lean();
-    return docs.map(doc => formatEvent(doc));
+// AI-ASSISTED : Aide pour les filtres mongoose
+// Prompt : Modifie la fonction getAllEvents pour qu'elle prenne en compte les filtres envoyés depuis le front
+// Modification : Incohérence logique sur certains filtres
+export const getAllEvents = async (filters = {}) => {
+    const query = {};
+
+    if (filters.sport) {
+        query.sport = filters.sport;
+    }
+    if (filters.city) {
+        query.location = { $regex: filters.city, $options: 'i' };
+    }
+
+    // Date
+    const now = new Date();
+    if (filters.date) {
+        const start = new Date(filters.date);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(filters.date);
+        end.setHours(23, 59, 59, 999);
+        query.date = { $gte: start, $lte: end };
+    } else if (filters.passed === 'false') {
+        query.date = { $gte: now };
+    }
+    // passed = true => return all events by default
+
+    // Full
+    if (filters.full === 'false') {
+        // return only available events
+        query.$or = [
+            { max: { $exists: false } },
+            { $expr: { $lt: [{ $size: { $ifNull: ["$attendees", []] } }, "$max"] } }
+        ];
+    }
+
+    const mongooseQuery = Event.find(query).sort({ createdAt: -1 });
+    const docs = await populateEvent(mongooseQuery).lean();
+    let formattedEvents = docs.map(doc => formatEvent(doc));
+
+    // In-memory filtering for User attributes
+    if (filters.gender) {
+        const targetGender = filters.gender.toLowerCase();
+        formattedEvents = formattedEvents.filter(event => 
+            event.user && event.user.gender && event.user.gender.toLowerCase() === targetGender
+        );
+    }
+
+    if (filters.ageMin || filters.ageMax) {
+        const min = filters.ageMin ? parseInt(filters.ageMin) : 18;
+        const max = filters.ageMax ? parseInt(filters.ageMax) : 99;
+        
+        formattedEvents = formattedEvents.filter(event => {
+            const age = event.user ? event.user.age : null;
+            // If age is null (no birthdate), exclude or include? Let's exclude to be safe.
+            if (age === null) return false;
+            return age >= min && age <= max;
+        });
+    }
+
+    return formattedEvents;
 };
 
 export const getEventById = async (id) => {

@@ -15,6 +15,16 @@ export interface User {
     role?: 'user' | 'admin';
 }
 
+export interface UserProfile {
+    _id: string;
+    username: string;
+    city?: string;
+    sports?: Sport[];
+    bio?: string;
+    age?: number;
+    profilePicture?: string;
+}
+
 export interface Sport {
     _id: string;
     name: string;

@@ -152,6 +152,10 @@
     transform: scale(1.02);
 }
 
+.button:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
 .contactBtn {
     background: var(--color-background);
     border: 1px solid var(--color-primary);

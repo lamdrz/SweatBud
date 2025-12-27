@@ -11,7 +11,7 @@ class EventController extends BaseController {
 
     getAll = async (req, res) => {
         try {
-            const results = await getAllEvents();
+            const results = await getAllEvents(req.query);
             this.success(res, results);
         } catch (err) {
             this.error(res, err);
