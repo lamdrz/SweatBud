@@ -11,7 +11,7 @@
 - S'inscrire à un evenement
 - Page détails evenement
 - Page profile user
-- Page modifier profil
+- Page modifier profil (+ change password)
 
 ## Challenges Faced
 
@@ -22,7 +22,9 @@
 ## AI Tool Usage This Week
 
 - Gemini 3 PRO : Comprendre pourquoi ma jointure na marchait pas (mon code était bon au final c'était un ID qui pointait vers rien dans la BDD)
-
+- Gain de temps sur du refactoring (refactoring controllers into services) : 
+    - Prompt : "à la maniere de auth, refactor tous les controller en créant des fonctions dans un fichier service dédié"
+    - Modifications : rien à dire, il a juste réécrit mon code dans des fonctions dédiées bien organisées
 
 ## Plan for Next Week
 

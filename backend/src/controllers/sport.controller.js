@@ -1,5 +1,6 @@
 import Sport from "../models/sport.model.js";
 import BaseController from "./base.controller.js";
+import { getAllSports } from "../services/sport.services.js";
 
 class SportController extends BaseController {
     constructor() {
@@ -8,7 +9,7 @@ class SportController extends BaseController {
 
     getAll = async (req, res) => {
         try {
-            const items = await this.model.find().sort({ name: 1 });
+            const items = await getAllSports();
             this.success(res, items);
         } catch (err) {
             this.error(res, err);

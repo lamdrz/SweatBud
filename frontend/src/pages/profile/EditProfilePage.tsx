@@ -180,7 +180,7 @@ const EditProfilePage: React.FC = () => {
 
     return (
         <div className={styles.editProfilePage}>
-            <BackArrow />
+            <BackArrow destination="/me" />
 
             <div className={profileStyles.profileHeader}>
                 <img src={backgroundImage} alt="background" className={profileStyles.backgroundImage} />

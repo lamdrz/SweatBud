@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import BaseController from "./base.controller.js";
+import { getUserProfile, getOwnUserProfile, updateUserField } from "../services/user.services.js";
 
 class UserController extends BaseController {
     constructor() {
@@ -8,35 +9,7 @@ class UserController extends BaseController {
 
     getProfile = async (req, res) => {
         try {
-            const query = this.model.findById(req.params.id).select("username city sports bio birthdate profilePicture")
-            const doc = await query.populate({
-                    path: "sports", 
-                    select: "name icon"
-                }).lean();
-
-            if (!doc) {
-                const err = new Error("User not found");
-                err.status = 404;
-                throw err;
-            }
-
-            let age = null;
-            if (doc && doc.birthdate) {
-                const ageDifMs = Date.now() - new Date(doc.birthdate).getTime();
-                const ageDate = new Date(ageDifMs);
-                age = Math.abs(ageDate.getUTCFullYear() - 1970);
-            }
-
-            const user = {
-                _id: doc._id,
-                username: doc.username,
-                city: doc.city,
-                sports: doc.sports || [],
-                bio: doc.bio,
-                age: age,
-                profilePicture: doc.profilePicture
-            };
-
+            const user = await getUserProfile(req.params.id);
             this.success(res, user);
         } catch (err) {
             this.error(res, err);
@@ -45,19 +18,7 @@ class UserController extends BaseController {
 
     getOwnProfile = async (req, res) => {
         try {
-            const user = await this.model.findById(req.user.id)
-                .select("-password -role -refreshToken -createdAt")
-                .populate({
-                    path: "sports",
-                    select: "name icon"
-                }).lean();
-
-            if (!user) {
-                const err = new Error("User not found");
-                err.status = 404;
-                throw err;
-            }
-
+            const user = await getOwnUserProfile(req.user.id);
             this.success(res, user);
         } catch (err) {
             this.error(res, err);
@@ -67,35 +28,7 @@ class UserController extends BaseController {
     updateField = async (req, res) => {
         try {
             const { field, value } = req.body;
-            
-            if (!field || value === undefined) {
-                const err = new Error("Field and value are required");
-                err.status = 400;
-                throw err;
-            }
-
-            if (field === 'password') {
-                const err = new Error("Use the dedicated change password endpoint");
-                err.status = 400;
-                throw err;
-            } 
-
-            const allowedFields = ["username", "email", "firstName", "lastName", "city", "bio", "birthdate", "gender", "profilePicture", "sports"];
-            if (!allowedFields.includes(field)) {
-                const err = new Error("Invalid field");
-                err.status = 400;
-                throw err;
-            }
-
-            const update = {};
-            update[field] = value;
-            
-            await this.model.findByIdAndUpdate(
-                req.user.id,
-                { $set: update },
-                { new: true }
-            );
-
+            await updateUserField(req.user.id, field, value);
             this.success(res, null, 204);
         } catch (err) {
             this.error(res, err);

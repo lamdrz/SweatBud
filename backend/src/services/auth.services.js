@@ -104,3 +104,22 @@ export const logoutUser = async (token) => {
         await user.save();
     }
 };
+
+export const changePassword = async (userId, oldPassword, newPassword) => {
+    const user = await User.findById(userId);
+    if (!user) {
+        const err = new Error("User not found");
+        err.status = 404;
+        throw err;
+    }
+
+    const ok = await comparePassword(oldPassword, user.password);
+    if (!ok) {
+        const err = new Error("Old password is incorrect");
+        err.status = 401;
+        throw err;
+    }
+    
+    user.password = await hashPassword(newPassword);
+    await user.save();
+};

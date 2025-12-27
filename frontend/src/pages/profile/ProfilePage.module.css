@@ -28,9 +28,9 @@
 
 .profileContent {
     margin: -70px auto 0 auto;
-    padding: calc(60px + 0.5rem) 2rem 0 2rem;
-    border-top-left-radius: 50% 10%;
-    border-top-right-radius: 50% 10%;
+    padding: calc(60px + 0.5rem) 2rem 2rem 2rem;
+    border-top-left-radius: 50% 70px;
+    border-top-right-radius: 50% 70px;
     background-color: var(--color-background);
     display: flex;
     flex-direction: column;

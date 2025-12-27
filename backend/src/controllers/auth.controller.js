@@ -1,4 +1,4 @@
-import { registerUser, authenticateUser, refreshAccessToken, logoutUser } from "../services/auth.services.js";
+import { registerUser, authenticateUser, refreshAccessToken, logoutUser, changePassword } from "../services/auth.services.js";
 import BaseController from "./base.controller.js";
 
 class AuthController extends BaseController {
@@ -38,6 +38,20 @@ class AuthController extends BaseController {
             await logoutUser(refreshToken);
             res.clearCookie('refreshToken');
             this.success(res, { message: "Logout successful." });
+        } catch (err) {
+            this.error(res, err);
+        }
+    };
+
+    changePassword = async (req, res) => {
+        if (!req.user || !req.user.id) {
+            return this.error(res, { message: "Unauthorized" }, 401);
+        }
+        const userId = req.user.id;
+        const { oldPassword, newPassword } = req.body;
+        try {
+            await changePassword(userId, oldPassword, newPassword);
+            this.success(res, { message: "Password changed successfully." });
         } catch (err) {
             this.error(res, err);
         }

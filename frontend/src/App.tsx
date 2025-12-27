@@ -15,6 +15,7 @@ import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import ProfilePage from './pages/profile/ProfilePage';
 import EditProfilePage from './pages/profile/EditProfilePage';
+import ChangePasswordPage from './pages/auth/ChangePasswordPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import PersistLogin from './components/PersistLogin';
 import RedirectIfAuth from './components/RedirectIfAuth';
@@ -43,6 +44,7 @@ function App() {
             <Route path="me">
               <Route index element={<ProfilePage />} />
               <Route path="edit" element={<EditProfilePage />} />
+              <Route path="change-password" element={<ChangePasswordPage />} />
             </Route>
 
             {/* Autre */}
