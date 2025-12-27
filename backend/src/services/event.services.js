@@ -51,6 +51,12 @@ export const getAllEvents = async (filters = {}) => {
     if (filters.city) {
         query.location = { $regex: filters.city, $options: 'i' };
     }
+    if (filters.creator) {
+        query.user = filters.creator;
+    }
+    if (filters.attendee) {
+        query['attendees.user'] = filters.attendee;
+    }
 
     // Date
     const now = new Date();

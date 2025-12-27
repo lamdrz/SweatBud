@@ -5,11 +5,11 @@ Obligatoire :
 [X] Page ajouter
 [-] Page profil
     [X] Infos profil
-    [ ] Annonces par ce user
-    [-] Page modifier profil
+    [X] Annonces par ce user
+    [X] Page modifier profil
         [X] Modifier champs
         [X] Modifier sports
-        [ ] Change password
+        [X] Change password
 [-] Page d'accueil avec liste d'evenement
     [X] Liste d'évenements
     [X] Bouton contacter
@@ -24,7 +24,7 @@ Obligatoire :
     [ ] Supprimer annonce
     [ ] Se retirer
     [ ] Retirer qqun
-[ ] Filtre evenements
+[X] Filtre evenements
 [ ] Messages
     [ ] List messages
     [ ] Conversations

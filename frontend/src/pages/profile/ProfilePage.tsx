@@ -9,11 +9,14 @@ import type { Sport, UserProfile } from '../../types/models';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from '../../components/ui/Loading';
 import ActionMenu from '../../components/ui/ActionMenu';
+import EventsList from '../../components/events/EventsList';
 
 const ProfilePage: React.FC = () => {
     const { auth } = useAuth();
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+
+    const [byUser, setByUser] = useState<boolean>(false);
 
     const { logout } = useAuth();
       const [logoutLoading, setLogoutLoading] = useState(false);
@@ -96,6 +99,25 @@ const ProfilePage: React.FC = () => {
                 }
 
                 { user.bio && <span className={styles.bio}>{user.bio}</span> }
+
+                <div className={styles.eventsToggle}>
+                    <div 
+                        className={`${styles.toggleBtn} ${byUser ? styles.toggleBtnActive : ''}`} 
+                        onClick={() => setByUser(true)}>
+                        Événements créés
+                    </div>
+                    <div 
+                        className={`${styles.toggleBtn} ${!byUser ? styles.toggleBtnActive : ''}`} 
+                        onClick={() => setByUser(false)}>
+                        Événements participés
+                    </div>
+                </div>
+
+                <div className={styles.eventsList}>
+                    {byUser ? <EventsList filters={{ creator: user._id }} /> :
+                        <EventsList filters={{ attendee: user._id }} />
+                    }
+                </div>
             </div>
         </div>
     );

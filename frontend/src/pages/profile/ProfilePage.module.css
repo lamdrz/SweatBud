@@ -28,7 +28,7 @@
 
 .profileContent {
     margin: -70px auto 0 auto;
-    padding: calc(60px + 0.5rem) 2rem 2rem 2rem;
+    padding: calc(60px + 0.5rem) 2rem 0 2rem;
     border-top-left-radius: 50% 70px;
     border-top-right-radius: 50% 70px;
     background-color: var(--color-background);
@@ -37,7 +37,6 @@
     align-items: center;
     width: 100%;
     max-width: 750px;
-    min-height: 100vh;
 }
 
 .username {
@@ -86,4 +85,28 @@
     .profilePicture {
         margin-top: 80px;
     }
+}
+
+.eventsToggle {
+    display: flex;
+    width: 100%;
+    max-width: 500px;
+    justify-content: space-evenly;
+    margin-top: 2rem;
+    gap: 1rem;
+    border-bottom: solid 1px #ddd;
+}
+.toggleBtn {
+    cursor: pointer;
+    text-align: center;
+    width: 50%;
+}
+.toggleBtnActive {
+    padding-bottom: 0.5rem;
+    border-bottom: solid 0.2rem var(--color-primary);
+    border-radius: 1px;
+}
+.eventsList {
+    width: 100%;
+    max-width: 600px;
 }
