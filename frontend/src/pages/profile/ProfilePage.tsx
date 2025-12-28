@@ -16,7 +16,7 @@ const ProfilePage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
 
-    const [byUser, setByUser] = useState<boolean>(false);
+    const [byUser, setByUser] = useState<boolean>(true);
 
     const { logout } = useAuth();
       const [logoutLoading, setLogoutLoading] = useState(false);
