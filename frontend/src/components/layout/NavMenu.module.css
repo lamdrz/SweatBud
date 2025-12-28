@@ -30,15 +30,17 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  color: var(--color-primary);
+  color: #333;
   height: 100%;
   width: 5rem;
+  transition: color 0.2s;
 }
-.navItem svg * {
-  color: var(--color-primary);
+.navItem * {
+  color: inherit;
 }
 .navItem.active  {
-  border-top: solid 4px var(--color-primary);
+  /* border-top: solid 4px var(--color-primary); */
+  color: var(--color-primary);
 }
 
 .linkText {
@@ -49,8 +51,9 @@
 /* Desktop */
 @media (min-width: 750px) {
   .pageContent {
-    margin-bottom: 0;
+    padding-bottom: 0;
     margin-left: var(--nav-size);
+    transition: margin-left 0.2s;
   }
 
   .navMenu {
@@ -85,19 +88,15 @@
   
   .navItem.active  {
     border-top: none;
-    border-right: solid 4px var(--color-primary);
+    /* border-right: solid 4px var(--color-primary); */
   }
 
   .navMenu:hover .linkText {
     display: inline;
     margin-left: 1rem;
-    font-weight: bold;
+    font-weight: 600;
     vertical-align: middle;
     color: var(--color-text);
     margin-top: 0.3rem;
-  }
-
-  .pageContent:has(+ .navMenu:hover) {
-    margin-left: 200px;
   }
 }

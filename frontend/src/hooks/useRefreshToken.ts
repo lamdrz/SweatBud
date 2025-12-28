@@ -15,7 +15,7 @@ export const useRefreshToken = () => {
         }
         
         const data = await res.json();
-        setAuth((prev: any) => ({ ...prev, user: data.user, accessToken: data.accessToken }));
+        setAuth(prev => ({ ...prev, user: data.user, accessToken: data.accessToken }));
         return data.accessToken;
     };
 };

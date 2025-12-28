@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import auth from "./routes/auth.routes.js";
 import users from "./routes/user.routes.js";
+import events from "./routes/event.routes.js";
+import sports from "./routes/sport.routes.js";
 
 dotenv.config();
 
@@ -21,5 +23,7 @@ app.use(express.static('public')); // to serve static files from 'public' direct
 // Routes
 app.use("/api/auth", auth);
 app.use("/api/users", users);
+app.use("/api/events", events);
+app.use("/api/sports", sports);
 
 export default app;

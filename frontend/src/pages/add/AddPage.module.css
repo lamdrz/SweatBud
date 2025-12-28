@@ -1,0 +1,139 @@
+.addPage {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: var(--color-background);
+    padding: 2rem;
+    border-top-left-radius: 50% 10%;
+    border-top-right-radius: 50% 10%;
+    width: 100%;
+    min-height: 90vh; 
+    margin-top: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.imageUpload {
+    width: 100%;
+    max-width: 300px;
+    height: 150px;
+    background-color: #AAB2BD;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.plusIcon {
+    font-size: 2rem;
+    background-color: var(--color-text);
+    color: #AAB2BD;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.plusIcon * {
+    color: inherit;
+}
+
+.form {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.inputGroup {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    position: absolute;
+    left: 15px;
+    color: var(--color-primary);
+    font-size: 1.2rem;
+    z-index: 1;
+    pointer-events: none;
+}
+.icon * {
+    color: inherit;
+}
+
+.input, .select, .textarea {
+    width: 100%;
+    padding: 12px 15px;
+    padding-left: calc(1.2rem + 30px);
+    border:none;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    background-color: white;
+    transition: box-shadow 0.3s;
+}
+.input:focus, .select:focus, .textarea:focus {
+    box-shadow: 0 0 0 2px rgba(255, 101, 101, 0.2);
+}
+
+.inputNoIcon {
+    padding-left: 15px;
+}
+
+.textarea {
+    padding-left: 15px;
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.error {
+    color: var(--color-error);
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.submitButton {
+    background-color: var(--color-primary);
+    color: var(--color-background);
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+    width: 60%;
+    align-self: center;
+    transition: transform 0.2s, opacity 0.2s;
+    margin-bottom: 3rem;
+}
+
+.submitButton:hover {
+    transform: scale(1.02);
+}
+
+.submitButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+@media (min-width: 750px) {
+    .container {
+        max-width: 600px;
+    }
+}

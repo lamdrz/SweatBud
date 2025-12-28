@@ -6,7 +6,7 @@ interface AuthContextType {
     auth: AuthState;
     setAuth: Dispatch<SetStateAction<AuthState>>;
     login: (username: string, password: string) => Promise<void>;
-    register: (payload: any) => Promise<void>;
+    register: (username: string, email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
 }
 
@@ -34,11 +34,11 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
         }
     }, []);
 
-    const register = useCallback(async (payload: any) => {
+    const register = useCallback(async (username: string, email: string, password: string) => {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
+            body: JSON.stringify({ username, email, password }),
             credentials: 'include'
         });
 

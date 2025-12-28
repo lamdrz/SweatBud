@@ -1,66 +1,236 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
 import styles from './EditProfilePage.module.css';
+import profileStyles from './ProfilePage.module.css';
 import backgroundImage from '../../assets/images/mountain-background.jpg';
+import type { Sport, User } from '../../types/models';
+import BackArrow from '../../components/ui/BackArrow';
+import useApi from '../../hooks/useApi';
+import Loading from '../../components/ui/Loading';
+import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { IconName } from '@fortawesome/free-solid-svg-icons';
 
+// AI-ASSISTED : Gemini 3 Pro
+// Prompt : rend cette page fonctionnelle, appuyer sur modifier change le infoValue en input modifiable, le text modifier devient "enregistrer" et si ce texte est cliqué pointe sur PUT /me avec le champ et la nouvelle valeur (voir backend user controller)
+// Modifications : Adaptation pour password (endpoint change password) + sports (multi select) + gender (select)
 const EditProfilePage: React.FC = () => {
-    const { auth, login } = useAuth();
-    const user = auth?.user;
+    // 1. Récupération des données (GET)
+    const { data: user, loading, error, execute: refreshUser } = useApi<User>(`/users/me`);
+    const { data: sportsList } = useApi<Sport[]>('/sports');
 
-    const [username, setUsername] = useState(user?.username || '');
-    const [email, setEmail] = useState(user?.email || '');
-    // For password changes, you would typically have currentPassword, newPassword, confirmPassword fields
-    // and a separate form/modal for security reasons.
-    // This is a simplified example.
+    // 2. Hook pour la mise à jour (PUT) - autoRun: false car déclenché manuellement
+    const { execute: updateUser, loading: saving } = useApi(
+        '/users/me', 
+        { method: 'PUT', autoRun: false }
+    );
 
-    const handleSave = async () => {
-        if (!user) return;
-        // Here you would call an API to update the user profile
-        console.log("Saving profile:", { username, email });
-        // For demonstration, we'll update the auth context locally
-        const updatedUser = { ...user, username, email };
-        // This is a mock login to update the context. 
-        // In a real app, you'd get the updated user from the API response.
-        // login(updatedUser.username, 'password'); // This would require re-authentication
+    const navigate = useNavigate();
+
+    const [editingField, setEditingField] = useState<string | null>(null);
+    const [tempValue, setTempValue] = useState<string | string[] | null>(null);
+    // On garde une erreur locale pour pouvoir la nettoyer facilement au changement de champ
+    const [localSaveError, setLocalSaveError] = useState<string | null>(null);
+
+    if (loading) return <Loading />;
+    if (error) return <p>Erreur : {error.message}</p>;
+    if (!user) return <p>Profil introuvable</p>;
+
+    const defaultAvatar = "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png";
+
+    const handleStartEditing = (field: string, value: string | Sport[]) => {
+        setLocalSaveError(null);
+        setEditingField(field);
+        
+        if (field === 'birthdate') {
+            setTempValue(new Date(value as string).toISOString().split('T')[0]);
+        } else if (field === 'sports') {
+            setTempValue(value ? (value as Sport[]).map((s: Sport) => s._id) : []);
+        } else {
+            setTempValue(value as string ?? '');
+        }
     };
 
-    if (!user) {
-        return <div>Chargement du profil ou utilisateur non connecté...</div>;
+    const handleCancelEditing = () => {
+        setEditingField(null);
+        setTempValue(null);
+        setLocalSaveError(null);
+    };
+
+    const handleSave = async () => {
+        if (!editingField) return;
+        setLocalSaveError(null);
+
+        try {
+            // Appel via useApi
+            await updateUser({
+                field: editingField,
+                value: tempValue
+            });
+
+            // Succès
+            await refreshUser(); // Rafraîchir l'affichage
+            setEditingField(null);
+            setTempValue(null);
+        } catch (err: Error | unknown) {
+            console.error("Erreur de sauvegarde:", err);
+            setLocalSaveError(err instanceof Error ? err.message : "Impossible de sauvegarder");
+        }
+    };
+
+    const handleEditPassword = () => {
+        navigate('/me/change-password');
+    };
+
+    const renderInfoItem = (label: string, fieldKey: string, valueDisplay: React.ReactNode, type: string = "text") => {
+        const isEditing = editingField === fieldKey;
+
+        return (
+            <div className={styles.infoItem}>
+                <div style={{ flex: 1 }}>
+                    <div className={styles.infoLabel}>{label}</div>
+                    
+                    {isEditing ? (
+                        <div className={styles.editContainer}>
+                            {/* Gestion des types d'input */}
+                            {fieldKey === 'bio' ? (
+                                <textarea 
+                                    className={`${styles.input} ${styles.editInput}`} 
+                                    value={tempValue as string} 
+                                    onChange={(e) => setTempValue(e.target.value)}
+                                    rows={3}
+                                />
+                            ) : fieldKey === 'sports' ? (
+                                <div className={`${styles.input} ${styles.sportsSelector}`}>
+                                    {sportsList?.map(sport => (
+                                        <label key={sport._id} className={styles.checkboxLabel}>
+                                            <input 
+                                                type="checkbox"
+                                                className={styles.checkboxInput}
+                                                checked={(tempValue as string[])?.includes(sport._id)}
+                                                onChange={(e) => {
+                                                    if (e.target.checked) {
+                                                        setTempValue([...(tempValue as string[]), sport._id]);
+                                                    } else {
+                                                        setTempValue((tempValue as string[])?.filter((id: string) => id !== sport._id));
+                                                    }
+                                                }}
+                                            />
+                                            <FontAwesomeIcon icon={sport.icon as IconName} /> {sport.name}
+                                        </label>
+                                    )) || <p>Chargement des sports...</p>}
+                                </div>
+                            ) : fieldKey === 'gender' ? (
+                                <select
+                                    className={`${styles.input} ${styles.editInput}`}
+                                    value={tempValue as string}
+                                    onChange={(e) => setTempValue(e.target.value)}
+                                >
+                                    <option value="">Sélectionner...</option>
+                                    <option value="Male">Homme</option>
+                                    <option value="Female">Femme</option>
+                                    <option value="Other">Autre</option>
+                                </select>
+                            ) : (
+                                <input 
+                                    type={type} 
+                                    className={`${styles.input} ${styles.editInput}`} 
+                                    value={tempValue as string} 
+                                    onChange={(e) => setTempValue(e.target.value)}
+                                />
+                            )}
+                            
+                            {localSaveError && <div className={styles.errorMessage}>{localSaveError}</div>}
+                        </div>
+                    ) : (
+                        <div className={styles.infoValue}>{valueDisplay}</div>
+                    )}
+                </div>
+
+                <div className={styles.actionBtns}>
+                    {isEditing ? (
+                        <>
+                            <button className={`${styles.button} ${styles.saveBtn}`} onClick={(e) => { e.preventDefault(); handleSave(); }}>
+                                {saving ? '...' : <FontAwesomeIcon icon="check" />}
+                            </button>
+                            <button className={`${styles.button} ${styles.cancelBtn}`} onClick={(e) => { e.preventDefault(); handleCancelEditing(); }}>
+                                <FontAwesomeIcon icon="times" />
+                            </button>
+                        </>
+                    ) : (
+                        <button
+                            className={`${styles.button} ${styles.editBtn}`} 
+                            onClick={(e) => { 
+                                e.preventDefault(); 
+                                const val = fieldKey === 'sports' ? user.sports : (user as unknown as Record<string, string>)[fieldKey];
+                                handleStartEditing(fieldKey, val ?? ''); 
+                            }}
+                        >
+                            modifier
+                        </button>
+                    )}
+                </div>
+            </div>
+        );
+    };
+
+    const genres = {
+        'Male': 'Homme',
+        'Female': 'Femme',
+        'Other': 'Autre'
     }
 
     return (
         <div className={styles.editProfilePage}>
-            <div className={styles.profileHeader} style={{ backgroundImage: `url(${backgroundImage})` }}>
+            <BackArrow destination="/me" />
+
+            <div className={profileStyles.profileHeader}>
+                <img src={backgroundImage} alt="background" className={profileStyles.backgroundImage} />
+                <img 
+                    src={user.profilePicture || defaultAvatar} 
+                    alt="Profile" 
+                    className={profileStyles.profilePicture} 
+                />
             </div>
-            <div className={styles.profileContent}>
-                <div className={styles.profilePicture} />
-                <h1 className={styles.username}>{user.username}</h1>
+
+            <div className={`${profileStyles.profileContent} ${styles.editProfileContent}`}>
+                <h1 className={profileStyles.username}>{user.username}</h1>
+
+                <div className={styles.separator}></div>
 
                 <div className={styles.infoSection}>
-                    <div className={styles.infoItem}>
-                        <div>
-                            <div className={styles.infoLabel}>Nom d'utilisateur</div>
-                            <div className={styles.infoValue}>{user.username}</div>
-                        </div>
-                        <a href="#" className={styles.editLink}>modifier</a>
-                    </div>
-                    <div className={styles.infoItem}>
-                        <div>
-                            <div className={styles.infoLabel}>Email</div>
-                            <div className={styles.infoValue}>{user.email}</div>
-                        </div>
-                        <a href="#" className={styles.editLink}>modifier</a>
-                    </div>
+                    {renderInfoItem("Nom d'utilisateur", "username", user.username)}
+                    {renderInfoItem("Email", "email", user.email, "email")}
+                    
                     <div className={styles.infoItem}>
                         <div>
                             <div className={styles.infoLabel}>Mot de passe</div>
-                            <div className={styles.infoValue}>**********</div>
+                            <div className={styles.infoValue}>************</div>
                         </div>
-                        <a href="#" className={styles.editLink}>modifier</a>
+                        <button className={`${styles.button} ${styles.editBtn}`} onClick={handleEditPassword}>modifier</button>
                     </div>
-                </div>
 
-                <button onClick={handleSave} className={styles.saveButton}>Enregistrer</button>
+                    {renderInfoItem("Prénom", "firstName", user.firstName || 'Non renseigné')}
+                    {renderInfoItem("Nom", "lastName", user.lastName || 'Non renseigné')}
+                    {renderInfoItem("Ville", "city", user.city || 'Non renseigné')}
+                    {renderInfoItem("Bio", "bio", user.bio || 'Non renseigné')}
+                    
+                    {renderInfoItem(
+                        "Date de naissance", 
+                        "birthdate", 
+                        user.birthdate ? new Date(user.birthdate).toLocaleDateString() : 'Non renseigné', 
+                        "date"
+                    )}
+                    
+                    { renderInfoItem("Genre", "gender", user.gender ? genres[user.gender] : 'Non renseigné')}
+
+                    {renderInfoItem(
+                        "Sports", 
+                        "sports", 
+                        user.sports && user.sports.length > 0 
+                            ? user.sports.map(s => s.name).join(', ') 
+                            : 'Aucun sport sélectionné'
+                    )}
+                </div>
             </div>
         </div>
     );

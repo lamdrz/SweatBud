@@ -1,0 +1,15 @@
+.eventsList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 70vh;
+}
+
+.noEvents {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    font-style: italic;
+    min-height: 70vh;
+}

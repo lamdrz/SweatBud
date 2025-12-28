@@ -5,6 +5,7 @@ import type { ApiOptions, ApiResponse } from "../types/api";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
+// AI-ASSISTED : M'a aidé pour UseCallback et autoRun
 export default function useApi<T>(endpoint: string, options: ApiOptions = {}): ApiResponse<T> {
     const { auth } = useAuth();
     const refresh = useRefreshToken();
@@ -14,7 +15,7 @@ export default function useApi<T>(endpoint: string, options: ApiOptions = {}): A
     const [loading, setLoading] = useState<boolean>(options.autoRun ?? true);
 
     // Fonction principale qui fait l'appel
-    const execute = useCallback(async (bodyData?: any) => {
+    const execute = useCallback(async (bodyData?: Record<string, unknown>) => {
         setLoading(true);
         setError(null);
 
@@ -50,20 +51,33 @@ export default function useApi<T>(endpoint: string, options: ApiOptions = {}): A
                     config.headers = headers;
                     
                     response = await fetch(`${BASE_URL}${endpoint}`, config);
-                } catch (refreshErr) {
+                } catch {
                     throw new Error("Session expirée, veuillez vous reconnecter.");
                 }
             }
 
+            if (response.status === 204) {
+                setData(null);
+                return null as unknown as T;
+            }
+
             if (!response.ok) {
-                throw new Error(`Erreur HTTP: ${response.status}`);
+                let errorMessage = `Erreur HTTP: ${response.status}`;
+                try {
+                    const errorBody = await response.json();
+                    if (errorBody.message) errorMessage = errorBody.message;
+                } catch { /* empty */ }
+                throw new Error(errorMessage);
             }
 
             const jsonData = await response.json();
             setData(jsonData);
+            return jsonData;
 
         } catch (err) {
-            setError(err instanceof Error ? err : new Error("Une erreur inconnue est survenue"));
+            const errorObj = err instanceof Error ? err : new Error("Une erreur inconnue est survenue");
+            setError(errorObj);
+            throw errorObj;
         } finally {
             setLoading(false);
         }

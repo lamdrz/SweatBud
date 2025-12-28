@@ -2,8 +2,8 @@ import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const generateAccessToken = (userId) =>
-  jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "15m" });
+const generateAccessToken = (user) =>
+  jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "15m" });
 
 const generateRefreshToken = (userId) =>
   jwt.sign({ id: userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
@@ -15,24 +15,24 @@ const hashPassword = async (password) => {
 
 const comparePassword = (plain, hash) => bcrypt.compare(plain, hash);
 
-export const registerUser = async ({ username, password }) => {
-  if (!username || !password) {
-    const err = new Error("Username and password required");
+export const registerUser = async ({ username, email, password }) => {
+  if (!username || !email || !password) {
+    const err = new Error("Username, email, and password required");
     err.status = 400;
     throw err;
   }
 
-  const existing = await User.findOne({ username });
+  const existing = await User.findOne({ $or: [{ username }, { email }] });
   if (existing) {
-    const err = new Error("Username already exists");
+    const err = new Error("Username or email already exists");
     err.status = 400;
     throw err;
   }
 
   const hashed = await hashPassword(password);
-  const user = await User.create({ username, password: hashed });
+  const user = await User.create({ username, email, password: hashed });
 
-  const accessToken = generateAccessToken(user._id);
+  const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user._id);
 
   user.refreshToken = refreshToken;
@@ -64,7 +64,7 @@ export const authenticateUser = async ({ username, password }) => {
     throw err;
   }
 
-  const accessToken = generateAccessToken(user._id);
+  const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user._id);
 
   user.refreshToken = refreshToken;
@@ -85,11 +85,11 @@ export const refreshAccessToken = async (token) => {
 
     if (!user || user.refreshToken !== token) {
         const err = new Error("Invalid refresh token");
-        err.status = 403;
+        err.status = 401;
         throw err;
     }
 
-    const accessToken = generateAccessToken(user._id);
+    const accessToken = generateAccessToken(user);
     return { accessToken, user };
 };
 
@@ -103,4 +103,23 @@ export const logoutUser = async (token) => {
         user.refreshToken = null;
         await user.save();
     }
+};
+
+export const changePassword = async (userId, oldPassword, newPassword) => {
+    const user = await User.findById(userId);
+    if (!user) {
+        const err = new Error("User not found");
+        err.status = 404;
+        throw err;
+    }
+
+    const ok = await comparePassword(oldPassword, user.password);
+    if (!ok) {
+        const err = new Error("Old password is incorrect");
+        err.status = 401;
+        throw err;
+    }
+    
+    user.password = await hashPassword(newPassword);
+    await user.save();
 };

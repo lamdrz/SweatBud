@@ -1,6 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+
 import ErrorPage from './components/errors/ErrorPage';
+import Error404Page from './components/errors/Error404Page';
 import Root from './components/layout/Root';
 
 import HomePage from './pages/home/HomePage';
@@ -9,14 +13,16 @@ import AddPage from './pages/add/AddPage';
 import MapPage from './pages/map/MapPage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
-import LogoutButton from './components/auth/LogoutButton';
 import ProfilePage from './pages/profile/ProfilePage';
 import EditProfilePage from './pages/profile/EditProfilePage';
+import ChangePasswordPage from './pages/auth/ChangePasswordPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import PersistLogin from './components/PersistLogin';
 import RedirectIfAuth from './components/RedirectIfAuth';
+import EventDetails from './components/events/EventDetails';
 
 function App() {
+  library.add(fas);
   return (
     <Routes>
       <Route path="/" element={<Root />} errorElement={<ErrorPage />}>
@@ -29,17 +35,24 @@ function App() {
 
           {/* protected routes */}
           <Route element={<ProtectedRoute />}>
+            
+            {/* Nav */}
             <Route index element={<HomePage />} />
             <Route path="chat" element={<ChatPage />} />
             <Route path="add" element={<AddPage />} />
             <Route path="map" element={<MapPage />} />
-            <Route path="profile">
+            <Route path="me">
               <Route index element={<ProfilePage />} />
               <Route path="edit" element={<EditProfilePage />} />
+              <Route path="change-password" element={<ChangePasswordPage />} />
             </Route>
-            <Route path="logout" element={<LogoutButton />} />
+
+            {/* Autre */}
+            <Route path="events/:id" element={<EventDetails />} />
+            <Route path="profile/:id" element={<ProfilePage />} />
           </Route>
         </Route>
+        <Route path="*" element={<Error404Page />} />
       </Route>
     </Routes>
   );

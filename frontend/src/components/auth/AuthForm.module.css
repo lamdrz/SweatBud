@@ -61,6 +61,7 @@
     padding: 1rem 1rem 1rem 3rem; /* Padding left to make space for icon */
     border: 1px solid #ccc;
     background-color: var(--color-background);
+    outline: none;
 }
 .input::placeholder {
     color: #666;

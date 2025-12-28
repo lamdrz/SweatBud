@@ -24,7 +24,7 @@ Sportifs de tous niveaux, coachs sportifs, nouveaux dans une ville.
 * Lightweight deployment - No gigabytes of data, should be easy for me to run
 
 ### 2.2 Utilisateurs
-* Guest (non connecté) : consulter annonces publiques, s'inscrire (formulaire)
+* Guest (non connecté) : se connecter / s'inscrire (formulaire)
 * User (connecté) : créer/éditer/supprimer ses propres annonces, s'inscrire/annuler inscription à des annonces, recevoir notifications, parcourir/filtrer/rechercher annonces existantes, envoyer des messages
 * Admin (optionnel) : modération, suppression d'annonces, gestion utilisateurs 
 
@@ -59,19 +59,26 @@ Sportifs de tous niveaux, coachs sportifs, nouveaux dans une ville.
 ## API endpoints
 
 * Authentification
-    * /api/auth/register
-    * /api/auth/login
-    * /api/auth/logout
+    * /api/auth/register POST
+    * /api/auth/login POST
+    * /api/auth/refresh !POST
+    * /api/auth/logout POST
 
 * Profil utilisateur
-    * /api/users
-    * /api/users/:id
+    * /api/users !!GET
+    * /api/users/:id !GET, !PUT, !DELETE
 
 * Annonces
-    * /api/events
-    * /api/events/:id
-    * /api/events/:id/attend
-    * /api/events/:id/attendees
+    * /api/events GET, !POST 
+    * /api/events/:id GET, !PUT, !DELETE
+    * /api/events/:id/attend POST
+
+* Sports
+    * /api/sports/ GET, !!POST
+    * /api/sports/:id GET
+
+! Route protégée (ex: owner uniquement)<br/>
+!! Role admin requis
 
 <br/>
 
@@ -80,13 +87,44 @@ Sportifs de tous niveaux, coachs sportifs, nouveaux dans une ville.
 User 
 ```
 {
-    ...
+	username: { type: String, required: true, unique: true },
+	email: { type: String, required: true, unique: true },
+	password: { type: String, required: true },
+
+	firstName: { type: String },
+	lastName: { type: String },
+	city: { type: String },
+	sports: [{ type: mongoose.Schema.Types.ObjectId, ref: "Sport" }],
+	bio: { type: String },
+	birthdate: { type: Date },
+	gender: { type: String, enum: ['Male', 'Female', 'Other'] },
+	profilePicture: { type: String },
+	role: { type: String, enum: ['user', 'admin'], default: 'user' },
+
+	refreshToken: { type: String },
+	createdAt: { type: Date, default: Date.now },
 }
 ```
 
 Event
 ```
 {
-    ...
+    user : { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    title: { type: String, required: true },
+    sport: { type: mongoose.Schema.Types.ObjectId, ref: "Sport", required: true },
+    location: { type: String, required: true },
+    date: { type: Date, required: true },
+    description: { type: String },
+    max: { type: Number },
+    medias: [{ type: String }],
+    createdAt: { type: Date, default: Date.now },
+}
+```
+
+Sport
+```
+{
+    name: { type: String, required: true, unique: true },
+    icon: { type: String },
 }
 ```
