@@ -14,7 +14,7 @@ const ChangePasswordPage: React.FC = () => {
         { name: 'confirmNewPassword', type: 'password', placeholder: 'Confirmer le nouveau mot de passe', icon: 'lock' },
     ];
 
-    const handleSubmit = async (formData: any) => {
+    const handleSubmit = async (formData: Record<string, string>) => {
         if (formData.newPassword !== formData.confirmNewPassword) {
             throw new Error("Les nouveaux mots de passe ne correspondent pas.");
         }

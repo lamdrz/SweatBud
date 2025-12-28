@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import useApi from '../../hooks/useApi';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { IconName } from '@fortawesome/free-solid-svg-icons';
 import type { Sport } from '../../types/models';
 
 const AddPage: React.FC = () => {
@@ -29,8 +28,10 @@ const AddPage: React.FC = () => {
   // Sélectionne le premier sport par défaut une fois les sports chargés
   useEffect(() => {
     if (sports && sports.length > 0 && !sportId) {
+      // eslint-disable-next-line
       setSportId(sports[0]._id);
     }
+  // eslint-disable-next-line
   }, [sports]);
 
   const handleSubmit = async (e: React.FormEvent) => {

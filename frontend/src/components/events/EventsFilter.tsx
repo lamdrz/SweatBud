@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { IconName } from '@fortawesome/fontawesome-svg-core';
 import styles from './EventsFilter.module.css';
@@ -58,13 +58,16 @@ const EventsFilter = ({ setFilters }: { setFilters: (filters: EventFilters) => v
     // Load sports
     useEffect(() => {
         if (sports && sports.length > 0 && !sport) {
+            // eslint-disable-next-line
             setSport(sports[0]._id);
         }
+    // eslint-disable-next-line
     }, [sports]);
 
     // Set defaults from user profile
     useEffect(() => {
         if (user) {
+            // eslint-disable-next-line
             if (user.city) setCity(user.city);
             if (user.sports && user.sports.length > 0) {
                 setSport(user.sports[0]._id);
@@ -73,7 +76,7 @@ const EventsFilter = ({ setFilters }: { setFilters: (filters: EventFilters) => v
     }, [user]);
 
     // AI-ASSISTED : Double Slider Logic
-    const getPercent = (value: number) => Math.round(((value - 18) / (99 - 18)) * 100);
+    const getPercent = useCallback((value: number) => Math.round(((value - 18) / (99 - 18)) * 100), []);
 
     // Refs for double slider
     const minValRef = useRef(ageMin);

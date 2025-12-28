@@ -4,7 +4,7 @@ import EventsList from '../../components/events/EventsList';
 import { useState } from 'react';
 
 export interface EventFilters {
-    [key: string]: any;
+    [key: string]: string | number | boolean | undefined;
 }
 
 const HomePage: React.FC = () => {

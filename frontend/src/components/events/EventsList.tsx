@@ -21,6 +21,7 @@ const EventsList = ({ filters }: { filters: EventFilters }) => {
 
     useEffect(() => {
         execute();
+    // eslint-disable-next-line
     }, [filters]);
 
     if (loading) return <Loading />;

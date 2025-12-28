@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import styles from './EditProfilePage.module.css';
 import profileStyles from './ProfilePage.module.css';
 import backgroundImage from '../../assets/images/mountain-background.jpg';
-import type { User } from '../../types/models';
+import type { Sport, User } from '../../types/models';
 import BackArrow from '../../components/ui/BackArrow';
 import useApi from '../../hooks/useApi';
 import Loading from '../../components/ui/Loading';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { IconName } from '@fortawesome/free-solid-svg-icons';
 
 // AI-ASSISTED : Gemini 3 Pro
 // Prompt : rend cette page fonctionnelle, appuyer sur modifier change le infoValue en input modifiable, le text modifier devient "enregistrer" et si ce texte est cliqué pointe sur PUT /me avec le champ et la nouvelle valeur (voir backend user controller)
@@ -15,7 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const EditProfilePage: React.FC = () => {
     // 1. Récupération des données (GET)
     const { data: user, loading, error, execute: refreshUser } = useApi<User>(`/users/me`);
-    const { data: sportsList } = useApi<any[]>('/sports');
+    const { data: sportsList } = useApi<Sport[]>('/sports');
 
     // 2. Hook pour la mise à jour (PUT) - autoRun: false car déclenché manuellement
     const { execute: updateUser, loading: saving } = useApi(
@@ -26,7 +27,7 @@ const EditProfilePage: React.FC = () => {
     const navigate = useNavigate();
 
     const [editingField, setEditingField] = useState<string | null>(null);
-    const [tempValue, setTempValue] = useState<any>(null);
+    const [tempValue, setTempValue] = useState<string | string[] | null>(null);
     // On garde une erreur locale pour pouvoir la nettoyer facilement au changement de champ
     const [localSaveError, setLocalSaveError] = useState<string | null>(null);
 
@@ -36,16 +37,16 @@ const EditProfilePage: React.FC = () => {
 
     const defaultAvatar = "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png";
 
-    const handleStartEditing = (field: string, value: any) => {
+    const handleStartEditing = (field: string, value: string | Sport[]) => {
         setLocalSaveError(null);
         setEditingField(field);
         
-        if (field === 'birthdate' && value) {
-            setTempValue(new Date(value).toISOString().split('T')[0]);
+        if (field === 'birthdate') {
+            setTempValue(new Date(value as string).toISOString().split('T')[0]);
         } else if (field === 'sports') {
-            setTempValue(value ? value.map((s: any) => s._id) : []);
+            setTempValue(value ? (value as Sport[]).map((s: Sport) => s._id) : []);
         } else {
-            setTempValue(value || '');
+            setTempValue(value as string ?? '');
         }
     };
 
@@ -70,9 +71,9 @@ const EditProfilePage: React.FC = () => {
             await refreshUser(); // Rafraîchir l'affichage
             setEditingField(null);
             setTempValue(null);
-        } catch (err: any) {
+        } catch (err: Error | unknown) {
             console.error("Erreur de sauvegarde:", err);
-            setLocalSaveError(err.message || "Impossible de sauvegarder");
+            setLocalSaveError(err instanceof Error ? err.message : "Impossible de sauvegarder");
         }
     };
 
@@ -94,7 +95,7 @@ const EditProfilePage: React.FC = () => {
                             {fieldKey === 'bio' ? (
                                 <textarea 
                                     className={`${styles.input} ${styles.editInput}`} 
-                                    value={tempValue} 
+                                    value={tempValue as string} 
                                     onChange={(e) => setTempValue(e.target.value)}
                                     rows={3}
                                 />
@@ -105,23 +106,23 @@ const EditProfilePage: React.FC = () => {
                                             <input 
                                                 type="checkbox"
                                                 className={styles.checkboxInput}
-                                                checked={tempValue.includes(sport._id)}
+                                                checked={(tempValue as string[])?.includes(sport._id)}
                                                 onChange={(e) => {
                                                     if (e.target.checked) {
-                                                        setTempValue([...tempValue, sport._id]);
+                                                        setTempValue([...(tempValue as string[]), sport._id]);
                                                     } else {
-                                                        setTempValue(tempValue.filter((id: string) => id !== sport._id));
+                                                        setTempValue((tempValue as string[])?.filter((id: string) => id !== sport._id));
                                                     }
                                                 }}
                                             />
-                                            <FontAwesomeIcon icon={sport.icon} /> {sport.name}
+                                            <FontAwesomeIcon icon={sport.icon as IconName} /> {sport.name}
                                         </label>
                                     )) || <p>Chargement des sports...</p>}
                                 </div>
                             ) : fieldKey === 'gender' ? (
                                 <select
                                     className={`${styles.input} ${styles.editInput}`}
-                                    value={tempValue}
+                                    value={tempValue as string}
                                     onChange={(e) => setTempValue(e.target.value)}
                                 >
                                     <option value="">Sélectionner...</option>
@@ -133,7 +134,7 @@ const EditProfilePage: React.FC = () => {
                                 <input 
                                     type={type} 
                                     className={`${styles.input} ${styles.editInput}`} 
-                                    value={tempValue} 
+                                    value={tempValue as string} 
                                     onChange={(e) => setTempValue(e.target.value)}
                                 />
                             )}
@@ -160,8 +161,8 @@ const EditProfilePage: React.FC = () => {
                             className={`${styles.button} ${styles.editBtn}`} 
                             onClick={(e) => { 
                                 e.preventDefault(); 
-                                const val = fieldKey === 'sports' ? user.sports : (user as any)[fieldKey];
-                                handleStartEditing(fieldKey, val); 
+                                const val = fieldKey === 'sports' ? user.sports : (user as unknown as Record<string, string>)[fieldKey];
+                                handleStartEditing(fieldKey, val ?? ''); 
                             }}
                         >
                             modifier
