@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    min-height: 60vh;
+    min-height: 70vh;
 }
 
 .noEvents {
@@ -11,5 +11,5 @@
     font-size: 1.2rem;
     margin-top: 2rem;
     font-style: italic;
-    min-height: 60vh;
+    min-height: 70vh;
 }

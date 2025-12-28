@@ -57,7 +57,7 @@ const EventDetails = () => {
             refreshEvent();
         } catch (err) {
             if (err instanceof Error) {
-                alert(err.message);
+                console.error(err.message);
             }
         }
     };

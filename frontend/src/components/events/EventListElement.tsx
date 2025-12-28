@@ -15,7 +15,7 @@ interface EventData extends Omit<Event, 'user'> {
     };
 }
 
-const EventListElement = ({event}: {key: string, event: EventData}) => {
+const EventListElement = ({event}: {event: EventData}) => {
     const { auth } = useAuth();
     const user = auth?.user;
 
@@ -70,7 +70,9 @@ const EventListElement = ({event}: {key: string, event: EventData}) => {
             navigate('/events/' + event._id);
         } catch (err) {
             if (err instanceof Error) {
-                alert(err.message);
+                console.log(err.message);
+            } else {
+                console.log("An unknown error occurred.");
             }
         }
     };

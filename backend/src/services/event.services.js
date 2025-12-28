@@ -1,4 +1,5 @@
 import Event from "../models/event.model.js";
+import User from "../models/user.model.js";
 
 const populateEvent = (query) => {
     return query
@@ -44,6 +45,7 @@ const formatEvent = (doc) => {
 // Modification : Incohérence logique sur certains filtres
 export const getAllEvents = async (filters = {}) => {
     const query = {};
+    const creatorFilterSpecified = !!filters.creator;
 
     if (filters.sport) {
         query.sport = filters.sport;
@@ -51,11 +53,11 @@ export const getAllEvents = async (filters = {}) => {
     if (filters.city) {
         query.location = { $regex: filters.city, $options: 'i' };
     }
-    if (filters.creator) {
-        query.user = filters.creator;
-    }
     if (filters.attendee) {
         query['attendees.user'] = filters.attendee;
+        if (!creatorFilterSpecified) {
+            query.user = { $ne: filters.attendee };
+        }
     }
 
     // Date
@@ -76,33 +78,43 @@ export const getAllEvents = async (filters = {}) => {
         // return only available events
         query.$or = [
             { max: { $exists: false } },
+            { max: null },
             { $expr: { $lt: [{ $size: { $ifNull: ["$attendees", []] } }, "$max"] } }
         ];
     }
 
+    // Apply user attribute filters at DB level (gender, age, creator)
+    const userCriteria = {};
+    if (filters.gender) {
+        // case-insensitive exact match
+        userCriteria.gender = new RegExp(`^${filters.gender}$`, 'i');
+    }
+    if (filters.ageMin || filters.ageMax) {
+        const minAge = filters.ageMin ? parseInt(filters.ageMin, 10) : 18;
+        const maxAge = filters.ageMax ? parseInt(filters.ageMax, 10) : 99;
+        const now = new Date();
+        const maxBirthdate = new Date(now);
+        maxBirthdate.setFullYear(now.getFullYear() - minAge);
+        const minBirthdate = new Date(now);
+        minBirthdate.setFullYear(now.getFullYear() - maxAge);
+        userCriteria.birthdate = { $gte: minBirthdate, $lte: maxBirthdate };
+    }
+    if (creatorFilterSpecified) {
+        userCriteria._id = filters.creator;
+    }
+
+    if (Object.keys(userCriteria).length > 0) {
+        const users = await User.find(userCriteria).select('_id').lean();
+        const userIds = users.map(u => u._id);
+        if (userIds.length === 0) return []; // No users match criteria
+
+        const excludeUser = query.user && query.user.$ne ? query.user.$ne : null;
+        query.user = excludeUser ? { $in: userIds, $ne: excludeUser } : { $in: userIds };
+    }
+
     const mongooseQuery = Event.find(query).sort({ createdAt: -1 });
     const docs = await populateEvent(mongooseQuery).lean();
-    let formattedEvents = docs.map(doc => formatEvent(doc));
-
-    // In-memory filtering for User attributes
-    if (filters.gender) {
-        const targetGender = filters.gender.toLowerCase();
-        formattedEvents = formattedEvents.filter(event => 
-            event.user && event.user.gender && event.user.gender.toLowerCase() === targetGender
-        );
-    }
-
-    if (filters.ageMin || filters.ageMax) {
-        const min = filters.ageMin ? parseInt(filters.ageMin) : 18;
-        const max = filters.ageMax ? parseInt(filters.ageMax) : 99;
-        
-        formattedEvents = formattedEvents.filter(event => {
-            const age = event.user ? event.user.age : null;
-            // If age is null (no birthdate), exclude or include? Let's exclude to be safe.
-            if (age === null) return false;
-            return age >= min && age <= max;
-        });
-    }
+    const formattedEvents = docs.map(doc => formatEvent(doc));
 
     return formattedEvents;
 };

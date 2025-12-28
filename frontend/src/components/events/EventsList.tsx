@@ -33,7 +33,7 @@ const EventsList = ({ filters }: { filters: EventFilters }) => {
 
     return (
         <div className={styles.eventsList}>
-            { events && events.map(event => (
+            { events.map(event => (
                 <EventListElement key={event._id} event={event} />
             ))}
         </div>

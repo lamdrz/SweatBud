@@ -26,6 +26,7 @@
 - Gain de temps sur du refactoring (refactoring controllers into services) : 
     - Prompt : "à la maniere de auth, refactor tous les controller en créant des fonctions dans un fichier service dédié"
     - Modifications : rien à dire, il a juste réécrit mon code dans des fonctions dédiées bien organisées
+- GitHub Copilot review Pull Request
 
 ## Plan for Next Week
 

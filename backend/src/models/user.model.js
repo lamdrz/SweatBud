@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
 	sports: [{ type: mongoose.Schema.Types.ObjectId, ref: "Sport" } ],
 	bio: { type: String },
 	birthdate: { type: Date },
-	gender: { type: String, enum: ['Male', 'Female', 'Other', ''] },
+	gender: { type: String, enum: ['Male', 'Female', 'Other'] },
 	profilePicture: { type: String },
 	role: { type: String, enum: ['user', 'admin'], default: 'user' },
 

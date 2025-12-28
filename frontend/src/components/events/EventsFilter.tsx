@@ -230,8 +230,8 @@ const EventsFilter = ({ setFilters }: { setFilters: (filters: EventFilters) => v
 
                         {/* Genre */}
                         <Filter icon={
-                            gender == 'male' ? 'mars' 
-                            : gender == 'female' ? 'venus' 
+                            gender === 'male' ? 'mars' 
+                            : gender === 'female' ? 'venus' 
                             : 'venus-mars'
                         }>
                             <select 

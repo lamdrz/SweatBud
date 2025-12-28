@@ -85,7 +85,7 @@ export const refreshAccessToken = async (token) => {
 
     if (!user || user.refreshToken !== token) {
         const err = new Error("Invalid refresh token");
-        err.status = 498;
+        err.status = 401;
         throw err;
     }
 

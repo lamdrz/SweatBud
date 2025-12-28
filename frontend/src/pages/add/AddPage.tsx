@@ -119,6 +119,7 @@ const AddPage: React.FC = () => {
               placeholder="Date"
               className={styles.input}
               value={date}
+              min={new Date().toISOString().slice(0,new Date().toISOString().lastIndexOf(":"))}
               onChange={(e) => setDate(e.target.value)}
               required
             />
@@ -130,7 +131,6 @@ const AddPage: React.FC = () => {
             <input
               type="number"
               min="0"
-              max="max"
               placeholder="Max participants"
               className={styles.input}
               value={max !== null ? max : ''}

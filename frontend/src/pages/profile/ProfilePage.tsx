@@ -25,8 +25,8 @@ const ProfilePage: React.FC = () => {
         setLogoutLoading(true);
         try {
           await logout();
-        } catch (error) {
-          console.error("Failed to logout", error);
+        } catch  {
+          console.error("Failed to logout");
         } finally {
           setLogoutLoading(false);
         }

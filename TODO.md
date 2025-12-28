@@ -36,6 +36,7 @@ Ce serait bien :
 [ ] Interface admin
 [ ] Ajouter images
 [ ] REfuser inscriptions / systeme de demande
+[ ] Validators
 
 En plus :
 [ ] Mot de passe oublié
