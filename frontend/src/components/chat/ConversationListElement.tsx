@@ -1,9 +1,12 @@
 import styles from "./ConversationListElement.module.css";
 import type { Conversation } from "../../types/models";
 import type { User as AuthUser } from "../../types/auth";
-import { getConversationImage, getConversationName } from "../../utils/getConverstaionInfo";
+import { getConversationImage, getConversationName, getOtherUserId } from "../../utils/getConverstaionInfo";
+import { useNavigate } from "react-router-dom";
 
 const ConversationListElement: React.FC<{ conv: Conversation; currentUser: AuthUser }> = ({ conv, currentUser }) => {
+    const navigate = useNavigate();
+
     const isUnread = (conv: Conversation) => {
         if (!conv.lastMessage) return false;
         return !conv.lastMessage.readBy.some(user => user._id === currentUser?.id) && conv.lastMessage.sender._id !== currentUser?.id;
@@ -30,9 +33,17 @@ const ConversationListElement: React.FC<{ conv: Conversation; currentUser: AuthU
 
         return date.toLocaleDateString();
     };
+
+    const handleAvatarClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        const otherUserId = getOtherUserId(conv, currentUser.id);
+        if (otherUserId) {
+            navigate(`/profile/${otherUserId}`);
+        }
+    }
     
     return <>
-        <img src={getConversationImage(conv, currentUser.id)} alt="avatar" className={styles.avatar} />
+        <img src={getConversationImage(conv, currentUser.id)} alt="avatar" className={styles.avatar} onClick={handleAvatarClick}/>
         <div className={styles.conversationInfo}>
             <div className={styles.topRow}>
                 <span className={styles.name}>{getConversationName(conv, currentUser.id)}</span>

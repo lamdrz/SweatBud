@@ -27,8 +27,15 @@ Obligatoire :
     [ ] Retirer qqun
 [X] Filtre evenements
 [-] Messages
-    [-] List messages
-    [-] Conversations
+    [X] List messages
+    [X] Conversations
+    [X] Groupes
+    [ ] Medias
+    [ ] Group details
+        [ ] Changer nom
+        [ ] Supprimer user
+        [ ] Ajouter user
+    [ ] Group auto event
 [ ] Carte
 
 Ce serait bien :
@@ -38,7 +45,6 @@ Ce serait bien :
 [ ] REfuser inscriptions / systeme de demande
 [ ] Validators
 [ ] Rayon
-[ ] Groupes
 
 En plus :
 [ ] Mot de passe oublié

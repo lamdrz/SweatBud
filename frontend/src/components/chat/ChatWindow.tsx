@@ -5,7 +5,8 @@ import Loading from '../ui/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { Conversation, Message } from '../../types/models';
 import type { User as AuthUser } from '../../types/auth';
-import { getConversationImage, getConversationName } from '../../utils/getConverstaionInfo';
+import { getConversationImage, getConversationName, getOtherUserId } from '../../utils/getConverstaionInfo';
+import { useNavigate } from 'react-router-dom';
 
 interface ChatWindowProps {
     conversation: Conversation;
@@ -36,6 +37,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, currentUser, setS
 
     const [newMessage, setNewMessage] = useState('');
 
+    const navigate = useNavigate();
+
     // AI-ASSISTED : Scroll to bottom quand on reçoit des messages
     const messagesEndRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -61,6 +64,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, currentUser, setS
         }
     };
 
+    const handleAvatarClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        const otherUserId = getOtherUserId(conversation, currentUser.id);
+        if (otherUserId) {
+            navigate(`/profile/${otherUserId}`);
+        }
+    }
+
     let previousUserId: string | null = null;
     const getMinuteTime = (date: string | Date) => new Date(date).setSeconds(0, 0);
 
@@ -70,8 +81,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, currentUser, setS
                 <button className={styles.backButton} onClick={() => setSelectedConversation(null)}>
                     <FontAwesomeIcon icon="arrow-left" />
                 </button>
-                <div className={styles.headerInfo}>
-                    <img src={getConversationImage(conversation, currentUser.id)} alt="avatar" className={styles.avatar} />
+                <div className={styles.headerInfo} onClick={handleAvatarClick}>
+                    <img src={getConversationImage(conversation, currentUser.id)} alt="avatar" className={styles.avatar}  />
                     <span className={styles.headerName}>{getConversationName(conversation, currentUser.id)}</span>
                 </div>
             </div>
@@ -91,7 +102,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, currentUser, setS
                         className={`${styles.messageItem} ${isMe ? styles.myMessage : styles.theirMessage}`}
                         style={{ marginTop: !showSenderName ? '-0.5rem' : '0' }}
                     >
-                        {showSenderName && <span className={styles.senderName}>{msg.sender.username}</span>}
+                        {showSenderName && <span className={styles.senderName} onClick={() => navigate(`/profile/${msg.sender._id}`)}>{msg.sender.username}</span>}
                         <div className={styles.messageBubble} >
                             {msg.text}
                         </div>

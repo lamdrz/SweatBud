@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from '../../components/ui/Loading';
 import ActionMenu from '../../components/ui/ActionMenu';
 import EventsList from '../../components/events/EventsList';
+import BackArrow from '../../components/ui/BackArrow';
 
 const ProfilePage: React.FC = () => {
     const { auth } = useAuth();
@@ -46,6 +47,8 @@ const ProfilePage: React.FC = () => {
 
     return (
         <div className={styles.profilePage}>
+
+            <BackArrow destination={-1} />
 
             <ActionMenu>
             {isOwnProfile ? <>

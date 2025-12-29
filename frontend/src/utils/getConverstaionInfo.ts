@@ -16,3 +16,9 @@ export const getConversationImage = (conv: Conversation, currentUserId: string) 
         "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
     );
 };
+
+export const getOtherUserId = (conv: Conversation, currentUserId: string) => {
+    if (conv.type === "group") return null;
+    const other = conv.members.find((m) => m._id !== currentUserId);
+    return other?._id || null;
+};
