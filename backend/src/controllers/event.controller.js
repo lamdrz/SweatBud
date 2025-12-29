@@ -7,8 +7,6 @@ class EventController extends BaseController {
         super(Event);
     }
 
-
-
     getAll = async (req, res) => {
         try {
             const results = await getAllEvents(req.query);

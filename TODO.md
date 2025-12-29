@@ -6,10 +6,11 @@ Obligatoire :
 [-] Page profil
     [X] Infos profil
     [X] Annonces par ce user
-    [X] Page modifier profil
+    [-] Page modifier profil
         [X] Modifier champs
         [X] Modifier sports
         [X] Change password
+        [ ] Change profile picture
 [-] Page d'accueil avec liste d'evenement
     [X] Liste d'évenements
     [X] Bouton contacter
@@ -25,9 +26,9 @@ Obligatoire :
     [ ] Se retirer
     [ ] Retirer qqun
 [X] Filtre evenements
-[ ] Messages
-    [ ] List messages
-    [ ] Conversations
+[-] Messages
+    [-] List messages
+    [-] Conversations
 [ ] Carte
 
 Ce serait bien :

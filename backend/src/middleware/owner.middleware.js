@@ -26,7 +26,7 @@ export const isEventOwner = async (req, res, next) => {
             }
         }
 
-        next();
+        return next();
 
     } catch (err) {
         res.status(500).json({ message: err.message });

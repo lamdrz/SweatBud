@@ -16,8 +16,10 @@ const userSchema = new mongoose.Schema({
 	role: { type: String, enum: ['user', 'admin'], default: 'user' },
 
 	refreshToken: { type: String },
-	createdAt: { type: Date, default: Date.now },
-});
+}, { timestamps: true });
+
+userSchema.index({ birthdate: 1 });
+userSchema.index({ gender: 1 });
  
 const User = mongoose.model("User", userSchema);
 export default User;
