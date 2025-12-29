@@ -1,5 +1,5 @@
-import Conversation from "../models/conversation.model";
-import Message from "../models/message.model";
+import Conversation from "../models/conversation.model.js";
+import Message from "../models/message.model.js";
 
 export const getInbox = async (userId, type = null) => {
     let filters = { members: userId };
@@ -7,8 +7,11 @@ export const getInbox = async (userId, type = null) => {
         filters.type = type;
     }
 
-    const query = await Conversation.find(filters).sort({ updatedAt: -1 })
-        .populate('lastMessage', 'text createdAt')
+    const query = await Conversation.find(filters)
+        .sort({ updatedAt: -1 })
+        .select('title lastMessage updatedAt')
+        .populate('lastMessage', 'text sender readBy')
+        .populate('members', 'username profilePicture')
         .lean();
 
     return query;

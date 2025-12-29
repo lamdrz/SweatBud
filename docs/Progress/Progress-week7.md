@@ -14,7 +14,7 @@
 
 ## AI Tool Usage This Week
 
-- 
+- Mock data
 
 ## Plan for Next Week
 
@@ -29,4 +29,4 @@
 
 
 ## Link to Commits
-- ce commit
+- https://github.com/lamdrz/SweatBud/commit/b4daf7f3426f6e7f8d9d70a81a57b7c90560bae7

@@ -34,16 +34,17 @@ Obligatoire :
 Ce serait bien :
 [ ] Pagination / au scroll
 [ ] Modifier annonce
-[ ] Interface admin
 [ ] Ajouter images
 [ ] REfuser inscriptions / systeme de demande
 [ ] Validators
+[ ] Rayon
+[ ] Groupes
 
 En plus :
 [ ] Mot de passe oublié
-[ ] Groupes
 [ ] Followers/amis
 [ ] Signalement
+[ ] Interface admin
 [ ] Adaptation mobile
 [ ] AJouter tracé GPX
 [ ] Notifications
