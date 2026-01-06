@@ -12,6 +12,7 @@
 }
 
 .infoSection {
+  width: 100%;
   max-width: 500px;
 }
   
@@ -19,7 +20,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
+  padding: 1rem 2rem;
   border-bottom: 1px solid #eee;
 }
   
@@ -29,6 +30,7 @@
   
 .infoValue {
   color: #888;
+  white-space: pre-line;
 }
   
 .button {
@@ -66,6 +68,12 @@
   border-radius: 4px;
   background-color: white;
   width: 80%;
+  font-family: inherit;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
 }
 
 .sportsSelector {

@@ -1,9 +1,8 @@
 import useAuth from './useAuth';
+import { API_URL } from "../utils/apiConfig";
 
 export const useRefreshToken = () => {
     const { setAuth } = useAuth();
-
-    const API_URL = import.meta.env.VITE_API_URL;
 
     return async (): Promise<string> => {
         const res = await fetch(API_URL + '/auth/refresh', { 

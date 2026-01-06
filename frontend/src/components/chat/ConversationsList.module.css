@@ -1,0 +1,63 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.tabs {
+    position: sticky;
+    top: 0;
+    background-color: var(--color-background);
+    z-index: 1;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    border-bottom: solid 1px #ddd;
+    margin-top: 1rem;
+}
+
+.tab {
+    cursor: pointer;
+    text-align: center;
+    width: 50%;
+    padding: 1rem 0;
+    font-weight: 600;
+    color: #888;
+    transition: color 0.2s;
+}
+
+.activeTab {
+    color: var(--color-primary);
+    border-bottom: solid 3px var(--color-primary);
+}
+
+.conversationList {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.conversationItem {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.conversationItem:hover {
+    background-color: #f2f2f2;
+}
+
+.emptyState {
+    text-align: center;
+    margin-top: 3rem;
+    color: #888;
+    font-style: italic;
+}
+
+@media (min-width: 750px) {
+    .conversationItem {
+        padding: 2rem;
+    }
+}

@@ -5,6 +5,7 @@ import type { Event } from '../../types/models';
 import useApi from '../../hooks/useApi';
 import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 interface EventData extends Omit<Event, 'user'> {
     user: {
@@ -20,8 +21,19 @@ const EventListElement = ({event}: {event: EventData}) => {
     const user = auth?.user;
 
     const navigate = useNavigate();
-
+    
     const defaultAvatar = "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png";
+    
+    const { execute: startConversation, data: conversationId, loading: conversationLoading } = useApi<string>(`/chats/${event.user._id}`, { 
+        method: 'POST',
+        autoRun: false 
+    });
+
+    useEffect(() => {
+        if (conversationId) {
+            navigate('/chat/' + conversationId);
+        }
+    }, [conversationId]);
 
     const { execute: joinEvent, loading: joinLoading } = useApi(`/events/${event._id}/attend`, {
         method: 'POST', 
@@ -58,9 +70,17 @@ const EventListElement = ({event}: {event: EventData}) => {
         navigate('/profile/' + event.user._id);
     }
 
-    const handleMessage = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleMessage = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        navigate('/chat/' + event.user._id);
+        try {
+            await startConversation();
+        } catch (err) {
+            if (err instanceof Error) {
+                console.log(err.message);
+            } else {
+                console.log("An unknown error occurred.");
+            }
+        }
     }
 
     const handleJoin = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -121,7 +141,10 @@ const EventListElement = ({event}: {event: EventData}) => {
             { !isPast ?
             <div className={styles.actions}>
                 { !isOwner && 
-                    <button className={`${styles.button} ${styles.contactBtn}`} onClick={handleMessage}>Contacter</button>
+                    <button className={`${styles.button} ${styles.contactBtn}`} 
+                        onClick={handleMessage}
+                        disabled={conversationLoading}
+                        >{conversationLoading ? '...' : 'Contacter'}</button>
                 }
                 
                 { hasJoined ?

@@ -6,10 +6,11 @@ Obligatoire :
 [-] Page profil
     [X] Infos profil
     [X] Annonces par ce user
-    [X] Page modifier profil
+    [-] Page modifier profil
         [X] Modifier champs
         [X] Modifier sports
         [X] Change password
+        [ ] Change profile picture
 [-] Page d'accueil avec liste d'evenement
     [X] Liste d'évenements
     [X] Bouton contacter
@@ -25,24 +26,31 @@ Obligatoire :
     [ ] Se retirer
     [ ] Retirer qqun
 [X] Filtre evenements
-[ ] Messages
-    [ ] List messages
-    [ ] Conversations
+[-] Messages
+    [X] List messages
+    [X] Conversations
+    [X] Groupes
+    [ ] Medias
+    [ ] Group details
+        [ ] Changer nom
+        [ ] Supprimer user
+        [ ] Ajouter user
+    [X] Group auto event
 [ ] Carte
 
 Ce serait bien :
 [ ] Pagination / au scroll
 [ ] Modifier annonce
-[ ] Interface admin
 [ ] Ajouter images
 [ ] REfuser inscriptions / systeme de demande
 [ ] Validators
+[ ] Rayon
 
 En plus :
 [ ] Mot de passe oublié
-[ ] Groupes
 [ ] Followers/amis
 [ ] Signalement
+[ ] Interface admin
 [ ] Adaptation mobile
 [ ] AJouter tracé GPX
 [ ] Notifications

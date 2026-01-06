@@ -44,3 +44,22 @@ export interface Event {
     medias?: string[];
     createdAt?: Date;
 }
+
+export interface Message {
+    _id: string;
+    sender: User;
+    text: string;
+    readBy: User[] | string[];
+    medias?: string[];
+    createdAt: string;
+}
+
+export interface Conversation {
+    _id: string;
+    type: 'private' | 'group';
+    members: User[];
+    title?: string;
+    groupAdmin?: User;
+    lastMessage?: Message;
+    updatedAt: string;
+}

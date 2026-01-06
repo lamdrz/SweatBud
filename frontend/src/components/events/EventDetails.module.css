@@ -84,6 +84,7 @@
     line-height: 1.5;
     color: var(--color-text);
     text-align: justify;
+    white-space: pre-wrap;
 }
 
 .actions {

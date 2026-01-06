@@ -2,10 +2,12 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './NavMenu.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import logo from '../../../public/logo.svg';
 
 const NavMenu: React.FC = () => {
   return (
     <nav className={styles.navMenu}>
+      <img className={styles.logo} src={logo} alt="SweatBud"/>
       <div className={styles.navItems}>
         <NavLink to="/" className={({ isActive }) => isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}>
           <FontAwesomeIcon icon='home' size="lg" />

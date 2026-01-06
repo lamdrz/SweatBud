@@ -1,6 +1,7 @@
 import { createContext, useState, useCallback } from 'react';
 import type { ReactNode, Dispatch, SetStateAction } from "react";
 import type { AuthState } from "../types/auth";
+import { API_URL } from "../utils/apiConfig";
 
 interface AuthContextType {
     auth: AuthState;
@@ -16,7 +17,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
     const [auth, setAuth] = useState<AuthState>({});
 
     const login = useCallback(async (username: string, password: string) => {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+        const response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password }),
@@ -35,7 +36,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
     }, []);
 
     const register = useCallback(async (username: string, email: string, password: string) => {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
+        const response = await fetch(`${API_URL}/auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, email, password }),
@@ -56,7 +57,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
     const logout = useCallback(async () => {
         setAuth({}); 
         try {
-            await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
+            await fetch(`${API_URL}/auth/logout`, {
                 method: 'POST',
                 credentials: 'include' 
             });

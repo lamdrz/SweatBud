@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styles from './AuthForm.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { IconName } from '@fortawesome/fontawesome-svg-core';
+import logo from '../../../public/logo.svg';
 
 export interface AuthFormField {
   name: string;
@@ -63,6 +64,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
   return (
     <div className={styles.authPage}>
       <div className={styles.container}>
+        <img className={styles.logo} src={logo} alt="SweatBud"/>
         <h2 className={styles.title}>{title}</h2>
         <form onSubmit={handleSubmit} className={styles.form}>
           {fields.map((field) => (

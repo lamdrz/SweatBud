@@ -13,8 +13,13 @@ const eventSchema = new mongoose.Schema({
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
         joinedAt: { type: Date, default: Date.now }
     }],
-    createdAt: { type: Date, default: Date.now },
-});
+    conversation: { type: mongoose.Schema.Types.ObjectId, ref: "Conversation" },
+}, { timestamps: true });
+
+eventSchema.index({ user: 1 });
+eventSchema.index({ sport: 1 });
+eventSchema.index({ location: 'text', date: 1 });
+eventSchema.index({ 'attendees.user': 1 });
  
 const Event = mongoose.model("Event", eventSchema);
 export default Event;
