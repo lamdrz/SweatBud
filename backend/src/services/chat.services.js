@@ -74,7 +74,7 @@ export const getOrCreatePrivateConversation = async (userId1, userId2) => {
     if (conversation) {
         return conversation;
     }
-    return await createConversation('private', [userId1, userId2]);
+    return await createConversation({ type: 'private', members: [userId1, userId2] });
 }
 
 
