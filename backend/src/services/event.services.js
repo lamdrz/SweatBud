@@ -180,12 +180,13 @@ export const unattendEvent = async (eventId, userId) => {
 };
 
 export const createEvent = async (eventData) => {
-    const eventConversation = await createConversation({
+    const convData = {
         type: 'group',
         members: [eventData.user],
         title: eventData.title,
         groupAdmin: eventData.user
-    });
+    };
+    const eventConversation = await createConversation(convData);
     eventData.conversation = eventConversation._id;
     const item = await Event.create(eventData);
     item.attendees.push({ user: item.user }); // Auto attend

@@ -9,7 +9,7 @@ export const getInbox = async (userId, type = null) => {
 
     const query = await Conversation.find(filters)
         .sort({ updatedAt: -1 })
-        .select('title lastMessage updatedAt')
+        .select('type title lastMessage updatedAt')
         .populate('lastMessage', 'text sender readBy')
         .populate('members', 'username profilePicture')
         .lean();
@@ -78,7 +78,7 @@ export const getOrCreatePrivateConversation = async (userId1, userId2) => {
 }
 
 
-export const createConversation = async (type, members, title=null, groupAdmin=null) => {
+export const createConversation = async ({ type, members, title=null, groupAdmin=null }) => {
     const conversation = new Conversation({ members, type, title, groupAdmin });
     await conversation.save();
     return conversation;
