@@ -27,12 +27,40 @@ export const getConversationDetails = async (conversationId) => {
     return conversation;
 }
 
-export const getConversationMessages = async (conversationId) => {
+export const getConversationMessages = async (conversationId, userId) => {
     const query = await Message.find({ conversation: conversationId })
         .sort({ createdAt: 1 })
         .select('sender text medias createdAt')
         .populate('sender', 'username profilePicture')
         .lean();
 
+    // Mark messages as read by the user
+    await markMessagesAsRead(conversationId, userId);
+
     return query;
+}
+
+export const markMessagesAsRead = async (conversationId, userId) => {
+    await Message.updateMany(
+        { conversation: conversationId, readBy: { $ne: userId } },
+        { $push: { readBy: userId } }
+    );
+}
+
+export const createMessage = async (conversationId, senderId, text, medias = []) => {
+    const message = new Message({
+        conversation: conversationId,
+        sender: senderId,
+        text,
+        medias,
+        readBy: [senderId],
+    });
+    await message.save();
+
+    // Update lastMessage in Conversation
+    await Conversation.findByIdAndUpdate(conversationId, {
+        lastMessage: message._id,
+        updatedAt: Date.now(),
+    }); 
+    return message;
 }

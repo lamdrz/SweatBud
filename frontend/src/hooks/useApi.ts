@@ -2,8 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import useAuth from "./useAuth";
 import { useRefreshToken } from "./useRefreshToken";
 import type { ApiOptions, ApiResponse } from "../types/api";
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from "../utils/apiConfig";
 
 // AI-ASSISTED : M'a aidé pour UseCallback et autoRun
 export default function useApi<T>(endpoint: string, options: ApiOptions = {}): ApiResponse<T> {
@@ -38,7 +37,7 @@ export default function useApi<T>(endpoint: string, options: ApiOptions = {}): A
 
         try {
             // 2. Premier appel
-            let response = await fetch(`${BASE_URL}${endpoint}`, config);
+            let response = await fetch(`${API_URL}${endpoint}`, config);
 
             // 3. Gestion spécifique du 401 (Token expiré)
             if (response.status === 401) {
@@ -50,7 +49,7 @@ export default function useApi<T>(endpoint: string, options: ApiOptions = {}): A
                     headers.set("Authorization", `Bearer ${newToken}`);
                     config.headers = headers;
                     
-                    response = await fetch(`${BASE_URL}${endpoint}`, config);
+                    response = await fetch(`${API_URL}${endpoint}`, config);
                 } catch {
                     throw new Error("Session expirée, veuillez vous reconnecter.");
                 }

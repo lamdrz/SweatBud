@@ -9,7 +9,7 @@ const ConversationListElement: React.FC<{ conv: Conversation; currentUser: AuthU
 
     const isUnread = (conv: Conversation) => {
         if (!conv.lastMessage) return false;
-        return !conv.lastMessage.readBy.some(user => user._id === currentUser?.id) && conv.lastMessage.sender._id !== currentUser?.id;
+        return !conv.lastMessage.readBy.some(userId => userId === currentUser?.id);
     }
 
     const formatDisplayDate = (dateInput: string | Date | number) => {

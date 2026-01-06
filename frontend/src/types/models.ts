@@ -49,7 +49,7 @@ export interface Message {
     _id: string;
     sender: User;
     text: string;
-    readBy: User[];
+    readBy: User[] | string[];
     medias?: string[];
     createdAt: string;
 }
