@@ -64,3 +64,40 @@ export const createMessage = async (conversationId, senderId, text, medias = [])
     }); 
     return message;
 }
+
+
+export const getOrCreatePrivateConversation = async (userId1, userId2) => {
+    const conversation = await Conversation.findOne({
+        type: 'private',
+        members: { $all: [userId1, userId2], $size: 2 },
+    });
+    if (conversation) {
+        return conversation;
+    }
+    return await createConversation('private', [userId1, userId2]);
+}
+
+
+export const createConversation = async (type, members, title=null, groupAdmin=null) => {
+    const conversation = new Conversation({ members, type, title, groupAdmin });
+    await conversation.save();
+    return conversation;
+}
+
+export const addMember = async (conversationId, userId) => {
+    const conversation = await Conversation.findByIdAndUpdate(
+        conversationId,
+        { $addToSet: { members: userId } },
+        { new: true }
+    );
+    return conversation;
+}
+
+export const removeMember = async (conversationId, userId) => {
+    const conversation = await Conversation.findByIdAndUpdate(
+        conversationId,
+        { $pull: { members: userId } },
+        { new: true }
+    );
+    return conversation;
+}

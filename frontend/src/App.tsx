@@ -38,7 +38,9 @@ function App() {
             
             {/* Nav */}
             <Route index element={<HomePage />} />
-            <Route path="chat" element={<ChatPage />} />
+            <Route path="chat" element={<ChatPage />}>
+              <Route path=":conversationId" element={<ChatPage />} />
+            </Route>
             <Route path="add" element={<AddPage />} />
             <Route path="map" element={<MapPage />} />
             <Route path="me">

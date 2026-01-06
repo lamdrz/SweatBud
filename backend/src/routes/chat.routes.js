@@ -9,7 +9,7 @@ const router = express.Router();
 // Conversations
 router.get('/', authenticate, ConversationController.getInbox);
 router.get('/:id', authenticate, isInGroup, ConversationController.getById);
-router.post('/', authenticate, ConversationController.create);
+router.post('/:userId', authenticate, ConversationController.startPrivateChat);
 router.put("/:id", authenticate, isGroupAdmin, ConversationController.update);
 
 // Messages

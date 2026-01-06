@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 interface ChatWindowProps {
     conversation: Conversation;
     currentUser: AuthUser;
-    setSelectedConversation: (conversation: Conversation | null) => void;
 }
 
 const formatMessageDate = (createdAt: string | Date) => {
@@ -26,7 +25,7 @@ const formatMessageDate = (createdAt: string | Date) => {
         : date.toLocaleString([], { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' });
 };
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, currentUser, setSelectedConversation }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, currentUser }) => {
     const { data: messages, loading: loadingMessages, execute: refreshMessages } = useApi<Message[]>(`/chats/${conversation._id}/messages`, { 
         autoRun: true 
     });
@@ -78,7 +77,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, currentUser, setS
     return (
         <div className={styles.chatView}>
             <div className={styles.chatHeader}>
-                <button className={styles.backButton} onClick={() => setSelectedConversation(null)}>
+                <button className={styles.backButton} onClick={() => navigate('/chat')}>
                     <FontAwesomeIcon icon="arrow-left" />
                 </button>
                 <div className={styles.headerInfo} onClick={handleAvatarClick}>

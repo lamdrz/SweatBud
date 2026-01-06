@@ -1,5 +1,6 @@
 import Event from "../models/event.model.js";
 import User from "../models/user.model.js";
+import { createConversation, addMember, removeMember } from "./chat.services.js";
 
 const populateEvent = (query) => {
     return query
@@ -154,6 +155,7 @@ export const attendEvent = async (eventId, userId) => {
 
     event.attendees.push({ user: userId });
     await event.save();
+    await addMember(event.conversation, userId);
     return { status: 200, message: "Joined event successfully" };
 };
 
@@ -173,10 +175,18 @@ export const unattendEvent = async (eventId, userId) => {
         err.status = 400;
         throw err;
     }
+    await removeMember(event.conversation, userId);
     await event.save();
 };
 
 export const createEvent = async (eventData) => {
+    const eventConversation = await createConversation({
+        type: 'group',
+        members: [eventData.user],
+        title: eventData.title,
+        groupAdmin: eventData.user
+    });
+    eventData.conversation = eventConversation._id;
     const item = await Event.create(eventData);
     item.attendees.push({ user: item.user }); // Auto attend
     await item.save();

@@ -5,16 +5,18 @@ import Loading from '../ui/Loading';
 import type { Conversation } from '../../types/models';
 import type { User as AuthUser } from '../../types/auth';
 import ConversationListElement from './ConversationListElement';
+import { useNavigate } from 'react-router-dom';
 
 interface ConversationsListProps {
     currentUser: AuthUser;
-    setSelectedConversation: (conversation: Conversation) => void;
 }
 
-const ConversationsList: React.FC<ConversationsListProps> = ({ currentUser, setSelectedConversation }) => {
+const ConversationsList: React.FC<ConversationsListProps> = ({ currentUser }) => {
     const [activeTab, setActiveTab] = React.useState<'private' | 'group'>('private');
 
     const { data: conversations, loading, error, execute: refresh } = useApi<Conversation[]>(`/chats?type=${activeTab}`, { autoRun: false});
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         refresh();
@@ -47,7 +49,7 @@ const ConversationsList: React.FC<ConversationsListProps> = ({ currentUser, setS
                 )}
 
                 {conversations?.map(conv => (
-                    <div key={conv._id} className={styles.conversationItem} onClick={() => setSelectedConversation(conv)}>
+                    <div key={conv._id} className={styles.conversationItem} onClick={() => navigate(`/chat/${conv._id}`)}>
                         <ConversationListElement 
                             conv={conv} 
                             currentUser={currentUser} 

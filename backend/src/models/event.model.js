@@ -13,6 +13,7 @@ const eventSchema = new mongoose.Schema({
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
         joinedAt: { type: Date, default: Date.now }
     }],
+    conversation: { type: mongoose.Schema.Types.ObjectId, ref: "Conversation" },
 }, { timestamps: true });
 
 eventSchema.index({ user: 1 });
