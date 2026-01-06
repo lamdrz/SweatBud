@@ -11,10 +11,22 @@
   height: var(--nav-size);
   background-color: var(--color-background);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   border-top: solid 0.1px var(--color-text);
+}
+
+.logo {
+  width: 35px;
+  height: 35px;
+  display: none;
+  margin-bottom: 2rem;
+}
+
+.navSeparator {
+  display: none;
 }
 
 .navItems {
@@ -42,6 +54,9 @@
   /* border-top: solid 4px var(--color-primary); */
   color: var(--color-primary);
 }
+.navItem:hover {
+  color: #ff9090;
+}
 
 .linkText {
   display: none;
@@ -68,6 +83,11 @@
 
   .navMenu:hover {
     width: 200px;
+  }
+
+  .logo {
+    display: block;
+    transition: width 0.2s, height 0.2s;
   }
 
   .navItems {
@@ -98,5 +118,10 @@
     vertical-align: middle;
     color: var(--color-text);
     margin-top: 0.3rem;
+  }
+
+  .navMenu:hover .logo {
+    width: 70px;
+    height: 70px;
   }
 }
