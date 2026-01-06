@@ -48,44 +48,56 @@ Sportifs de tous niveaux, coachs sportifs, nouveaux dans une ville.
 ## 3. Technical requirements
 
 ### 3.1 Frontend
-* ReactJS
+* ReactJS (Vite + TypeScript)
 
-### 3.1 Backend
-* MongoDB
-* Express.js
+### 3.2 Backend
+* Node.js avec Express.js
+
+### 3.3 Database
+* MongoDB (Mongoose ODM)
 
 <br/>
 
 ## API endpoints
 
-* Authentification
-    * /api/auth/register POST
-    * /api/auth/login POST
-    * /api/auth/refresh !POST
-    * /api/auth/logout POST
+| Method | Endpoint | Description | Security |
+| :--- | :--- | :--- | :--- |
+| **Authentification** | | | |
+| `POST` | `/api/auth/register` | Créer un nouveau compte | Public |
+| `POST` | `/api/auth/login` | Se connecter | Public |
+| `POST` | `/api/auth/refresh` | Rafraîchir un token d'accès | Public |
+| `POST` | `/api/auth/logout` | Se déconnecter | Authenticated (User) |
+| `POST` | `/api/auth/change-password` | Changer de mot de passe | Authenticated (User) |
+| **Profil utilisateur** | | | |
+| `GET` | `/api/users/:id` | Obtenir un profil utilisateur | Public |
+| `GET` | `/api/users/me` | Obtenir son profil utilisateur (+ d'infos que /:id) | Authenticated (User) |
+| `PUT` | `/api/users/:id` | Modifier son profil | Authenticated (Owner) |
+| **Events** | | | |
+| `GET` | `/api/events` | Lister les annonces (filtres possibles) | Public |
+| `POST` | `/api/events` | Créer une annonce | Authenticated (User) |
+| `GET` | `/api/events/:id` | Voir détails d'une annonce | Public |
+| `PUT` | `/api/events/:id` | Modifier une annonce | Authenticated (Owner) |
+| `DELETE` | `/api/events/:id` | Supprimer une annonce | Authenticated (Owner/Admin) |
+| `POST` | `/api/events/:id/attend` | Rejoindre/Quitter une annonce | Authenticated (User) |
+| **Sports** | | | |
+| `GET` | `/api/sports` | Lister les sports disponibles | Public |
+| `POST` | `/api/sports` | Ajouter un nouveau sport | Authenticated (Admin) |
+| `GET` | `/api/sports/:id` | Obtenir détails d'un sport | Public |
+| **Chat** | | | |
+| `GET` | `/api/chat` | Lister ses conversations | Authenticated (User) |
+| `GET` | `/api/chat/:id` | Obtenir détails d'une conversation | Authenticated (Participant) |
+| `POST` | `/api/chat/:userId` | Créer une conversation avec un user | Authenticated (User) |
+| `PUT` | `/api/chat/:id` | Modifier une conversation (ex: lu) | Authenticated (Participant) |
+| `GET` | `/api/chat/:id/messages` | Lister les messages d'une conv. | Authenticated (Participant) |
+| `POST` | `/api/chat/:id/messages` | Envoyer un message | Authenticated (Participant) |
 
-* Profil utilisateur
-    * /api/users !!GET
-    * /api/users/:id !GET, !PUT, !DELETE
-
-* Annonces
-    * /api/events GET, !POST 
-    * /api/events/:id GET, !PUT, !DELETE
-    * /api/events/:id/attend POST
-
-* Sports
-    * /api/sports/ GET, !!POST
-    * /api/sports/:id GET
-
-! Route protégée (ex: owner uniquement)<br/>
-!! Role admin requis
 
 <br/>
 
 ## Modèles MongoDB
 
 User 
-```
+```js
 {
 	username: { type: String, required: true, unique: true },
 	email: { type: String, required: true, unique: true },
@@ -94,7 +106,7 @@ User
 	firstName: { type: String },
 	lastName: { type: String },
 	city: { type: String },
-	sports: [{ type: mongoose.Schema.Types.ObjectId, ref: "Sport" }],
+	sports: [{ type: mongoose.Schema.Types.ObjectId, ref: "Sport" } ],
 	bio: { type: String },
 	birthdate: { type: Date },
 	gender: { type: String, enum: ['Male', 'Female', 'Other'] },
@@ -102,12 +114,14 @@ User
 	role: { type: String, enum: ['user', 'admin'], default: 'user' },
 
 	refreshToken: { type: String },
-	createdAt: { type: Date, default: Date.now },
+    // Timestamps
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
 }
 ```
 
 Event
-```
+```js
 {
     user : { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     title: { type: String, required: true },
@@ -117,14 +131,49 @@ Event
     description: { type: String },
     max: { type: Number },
     medias: [{ type: String }],
+    attendees: [{ 
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        joinedAt: { type: Date, default: Date.now }
+    }],
+    conversation: { type: mongoose.Schema.Types.ObjectId, ref: "Conversation" },
+    // Timestamps
     createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
 }
 ```
 
 Sport
-```
+```js
 {
     name: { type: String, required: true, unique: true },
     icon: { type: String },
+}
+```
+
+Conversation
+```js
+{
+    type : { type: String, enum: ['private', 'group'], required: true },
+    members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }],
+    title: { type: String },
+    groupAdmin: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    lastMessage: { type: mongoose.Schema.Types.ObjectId, ref: "Message" },
+    // Timestamps
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
+}
+```
+
+Message
+```js
+{
+    conversation: { type: mongoose.Schema.Types.ObjectId, ref: "Conversation", required: true },
+    sender: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    text: { type: String, required: true },
+    readBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    medias: [{ type: String }],
+    // Timestamps
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
 }
 ```
