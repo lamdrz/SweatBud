@@ -6,7 +6,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/sweatbud
+      - MONGODB_URI=mongodb://mongo:27017/sweatbud
       - MONGO_DB_NAME=sweatbud
       - NODE_ENV=development
       - JWT_SECRET=123456789
@@ -25,6 +25,8 @@ services:
     restart: always
     ports:
       - "5173:5173"
+    environment:
+      - REACT_APP_API_URL=http://${IP_ADDRESS:-localhost}:5000/api
     volumes:
       - ./frontend:/app
       - /app/node_modules

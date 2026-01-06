@@ -35,7 +35,7 @@ Obligatoire :
         [ ] Changer nom
         [ ] Supprimer user
         [ ] Ajouter user
-    [ ] Group auto event
+    [X] Group auto event
 [ ] Carte
 
 Ce serait bien :
